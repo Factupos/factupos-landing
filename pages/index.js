@@ -55,11 +55,12 @@ try {
   }
 
   alert("¡Datos enviados correctamente!");
-  e.target.reset(); // Limpiar formulario
+  e.target.reset();
 } catch (error) {
   console.error("Error al enviar datos:", error);
-  alert("Hubo un error al enviar tus datos. Intenta nuevamente.");
+  alert("Hubo un error al enviar tus datos.");
 }
+
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
