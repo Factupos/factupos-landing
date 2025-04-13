@@ -60,7 +60,7 @@ try {
   console.error("Error al enviar datos:", error);
   alert("Hubo un error al enviar tus datos.");
 }
-
+}
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
