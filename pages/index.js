@@ -39,27 +39,27 @@ export default function Home() {
     const formData = { name, email, phone, role };
 
     // URL de tu Web App de Google Apps Script
-    const WEB_APP_URL = "https://n8n.onrender.com/webhook/contacto-formulario";
-   
+    const WEB_APP_URL = "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
 
-    try {
-      // Debido a las restricciones CORS en Google Apps Script, usamos mode: "no-cors"
-      const response = await fetch(WEB_APP_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData)
-});
+try {
+  const response = await fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  });
 
-      // En modo "no-cors" la respuesta es opaca y no podemos leer el JSON
-      alert("¡Datos enviados! Si no hay errores, se insertarán en la hoja.");
-
-      // Opcional: Limpiar el formulario
-      e.target.reset();
-    } catch (error) {
-      console.error("Error al enviar datos:", error);
-      alert("Ocurrió un error al enviar los datos.");
-    }
+  if (!response.ok) {
+    throw new Error("La solicitud no fue exitosa.");
   }
+
+  alert("¡Datos enviados correctamente!");
+  e.target.reset(); // Limpiar formulario
+} catch (error) {
+  console.error("Error al enviar datos:", error);
+  alert("Hubo un error al enviar tus datos. Intenta nuevamente.");
+}
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
