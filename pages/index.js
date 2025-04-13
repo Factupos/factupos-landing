@@ -45,11 +45,10 @@ export default function Home() {
     try {
       // Debido a las restricciones CORS en Google Apps Script, usamos mode: "no-cors"
       const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "no-cors",
-        body: JSON.stringify(formData)
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
+});
 
       // En modo "no-cors" la respuesta es opaca y no podemos leer el JSON
       alert("¡Datos enviados! Si no hay errores, se insertarán en la hoja.");
