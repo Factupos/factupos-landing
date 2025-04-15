@@ -34,87 +34,82 @@ export default function Home() {
 
   // Función para manejar el envío del formulario
   async function handleSubmit(e) {
-    // Si esta función se llama desde el Enter del último campo, revisa si e es un evento
-    if (e?.preventDefault) {
-      e.preventDefault();
-    }
-
-    // Evita doble envío si ya está cargando
-    if (isLoading) return;
-
-    setIsLoading(true);
-
-    // Recoger los valores de los campos y quitar espacios en blanco
-    const name = nameRef.current.value.trim();
-    const email = emailRef.current.value.trim();
-    const phone = phoneRef.current.value.trim();
-    const role = roleRef.current.value;
-
-    // Validaciones en la página
-    if (!name) {
-      alert("Por favor, ingresa tu nombre.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validación de correo con expresión regular sencilla
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      alert("Por favor, ingresa un correo electrónico válido.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validar que el teléfono contenga solo números
-    const phoneRegex = /^\d+$/;
-    if (!phone || !phoneRegex.test(phone)) {
-      alert("El teléfono debe contener solamente números.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validar que se seleccione un cargo
-    if (!role) {
-      alert("Por favor, selecciona tu perfil.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Crear objeto con los datos del formulario
-    const formData = { name, email, phone, role };
-
-    // URL de tu Web App de Google Apps Script o backend
-    const WEB_APP_URL =
-      "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
-
-    try {
-      const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("La solicitud no fue exitosa.");
-      }
-
-      alert("¡Tus datos se han enviado correctamente!");
-      // Resetea los campos
-      e.target?.reset(); // si se llamó desde el submit, e.target es el form
-      // O puedes resetear uno a uno
-      nameRef.current.value = "";
-      emailRef.current.value = "";
-      phoneRef.current.value = "";
-      roleRef.current.value = "";
-    } catch (error) {
-      console.error("Error al enviar datos:", error);
-      alert("Hubo un error al enviar tus datos.");
-    } finally {
-      setIsLoading(false);
-    }
+  if (e?.preventDefault) {
+    e.preventDefault();
   }
+
+  if (isLoading) return;
+  setIsLoading(true);
+
+  console.time("tiempo_total_formulario"); // ⏱️ Inicia medición total
+
+  const name = nameRef.current.value.trim();
+  const email = emailRef.current.value.trim();
+  const phone = phoneRef.current.value.trim();
+  const role = roleRef.current.value;
+
+  if (!name) {
+    alert("Por favor, ingresa tu nombre.");
+    setIsLoading(false);
+    console.timeEnd("tiempo_total_formulario");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    alert("Por favor, ingresa un correo electrónico válido.");
+    setIsLoading(false);
+    console.timeEnd("tiempo_total_formulario");
+    return;
+  }
+
+  const phoneRegex = /^\d+$/;
+  if (!phone || !phoneRegex.test(phone)) {
+    alert("El teléfono debe contener solamente números.");
+    setIsLoading(false);
+    console.timeEnd("tiempo_total_formulario");
+    return;
+  }
+
+  if (!role) {
+    alert("Por favor, selecciona tu perfil.");
+    setIsLoading(false);
+    console.timeEnd("tiempo_total_formulario");
+    return;
+  }
+
+  const formData = { name, email, phone, role };
+  const WEB_APP_URL = "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
+
+  try {
+    console.time("fetch_post"); // 🛰️ Medición solo del fetch
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    console.timeEnd("fetch_post"); // 🛰️ Fin de medición de fetch
+
+    if (!response.ok) {
+      throw new Error("La solicitud no fue exitosa.");
+    }
+
+    alert("¡Tus datos se han enviado correctamente!");
+
+    nameRef.current.value = "";
+    emailRef.current.value = "";
+    phoneRef.current.value = "";
+    roleRef.current.value = "";
+  } catch (error) {
+    console.error("Error al enviar datos:", error);
+    alert("Hubo un error al enviar tus datos.");
+  } finally {
+    setIsLoading(false);
+    console.timeEnd("tiempo_total_formulario"); // ⏱️ Fin de la medición total
+  }
+}
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800">
