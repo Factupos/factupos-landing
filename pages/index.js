@@ -34,82 +34,85 @@ export default function Home() {
 
   // Función para manejar el envío del formulario
   async function handleSubmit(e) {
-  if (e?.preventDefault) {
-    e.preventDefault();
-  }
+    // Si esta función se llama desde el Enter del último campo, revisa si e es un evento
+    if (e?.preventDefault) {
+      e.preventDefault();
+    }
 
-  if (isLoading) return;
-  setIsLoading(true);
+    // Evita doble envío si ya está cargando
+    if (isLoading) return;
 
-  console.time("tiempo_total_formulario"); // ⏱️ Inicia medición total
+    setIsLoading(true);
 
-  const name = nameRef.current.value.trim();
-  const email = emailRef.current.value.trim();
-  const phone = phoneRef.current.value.trim();
-  const role = roleRef.current.value;
+    // Recoger los valores de los campos y quitar espacios en blanco
+    const name = nameRef.current.value.trim();
+    const email = emailRef.current.value.trim();
+    const phone = phoneRef.current.value.trim();
+    const role = roleRef.current.value;
 
-  if (!name) {
-    alert("Por favor, ingresa tu nombre.");
-    setIsLoading(false);
-    console.timeEnd("tiempo_total_formulario");
-    return;
-  }
+    // Validaciones en la página
+    if (!name) {
+      alert("Por favor, ingresa tu nombre.");
+      setIsLoading(false);
+      return;
+    }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    alert("Por favor, ingresa un correo electrónico válido.");
-    setIsLoading(false);
-    console.timeEnd("tiempo_total_formulario");
-    return;
-  }
+    // Validación de correo con expresión regular sencilla
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      alert("Por favor, ingresa un correo electrónico válido.");
+      setIsLoading(false);
+      return;
+    }
 
-  const phoneRegex = /^\d+$/;
-  if (!phone || !phoneRegex.test(phone)) {
-    alert("El teléfono debe contener solamente números.");
-    setIsLoading(false);
-    console.timeEnd("tiempo_total_formulario");
-    return;
-  }
+    // Validar que el teléfono contenga solo números
+    const phoneRegex = /^\d+$/;
+    if (!phone || !phoneRegex.test(phone)) {
+      alert("El teléfono debe contener solamente números.");
+      setIsLoading(false);
+      return;
+    }
 
-  if (!role) {
-    alert("Por favor, selecciona tu perfil.");
-    setIsLoading(false);
-    console.timeEnd("tiempo_total_formulario");
-    return;
-  }
+    // Validar que se seleccione un cargo
+    if (!role) {
+      alert("Por favor, selecciona tu perfil.");
+      setIsLoading(false);
+      return;
+    }
 
-  const formData = { name, email, phone, role };
-  const WEB_APP_URL = "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
+    // Crear objeto con los datos del formulario
+    const formData = { name, email, phone, role };
 
-  try {
-    console.time("fetch_post"); // 🛰️ Medición solo del fetch
-    const response = await fetch(WEB_APP_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    console.timeEnd("fetch_post"); // 🛰️ Fin de medición de fetch
+    // URL de tu Web App de Google Apps Script o backend
+    const WEB_APP_URL =
+      "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
 
-    if (!response.ok) {
+    try {
+      const response = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
       throw new Error("La solicitud no fue exitosa.");
     }
 
-    alert("¡Tus datos se han enviado correctamente!");
-
+    // Al terminar sin errores, limpiamos el formulario SIN mostrar alert
     nameRef.current.value = "";
     emailRef.current.value = "";
     phoneRef.current.value = "";
     roleRef.current.value = "";
-  } catch (error) {
-    console.error("Error al enviar datos:", error);
-    alert("Hubo un error al enviar tus datos.");
-  } finally {
-    setIsLoading(false);
-    console.timeEnd("tiempo_total_formulario"); // ⏱️ Fin de la medición total
+    nameRef.current.focus();
+    } catch (error) {
+      console.error("Error al enviar datos:", error);
+      alert("Hubo un error al enviar tus datos.");
+    } finally {
+      setIsLoading(false);
+    }
   }
-}
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800">
@@ -189,12 +192,17 @@ export default function Home() {
 
           {/* Botón de Enviar */}
           <button
-            type="submit"
-            className="bg-gradient-to-r from-sky-500 to-blue-700 text-white py-3 rounded-xl font-bold tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={isLoading}
-          >
-            {isLoading ? "Enviando..." : "Solicitar información"}
-          </button>
+  type="submit"
+  className="relative flex items-center justify-center bg-gradient-to-r from-sky-500 to-blue-700 text-white py-3 rounded-xl font-bold tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+  disabled={isLoading}
+>
+  {isLoading && (
+    <span className="absolute left-4">
+      <span className="block w-5 h-5 border-2 border-t-2 border-white rounded-full animate-spin"></span>
+    </span>
+  )}
+  <span>{isLoading ? "Enviando..." : "Solicitar información"}</span>
+</button>
 
           {/* Animación de carga (ejemplo sencillo con texto) */}
           {isLoading && (
