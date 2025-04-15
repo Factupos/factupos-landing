@@ -20,17 +20,6 @@ export default function Home() {
   }
 
   // Maneja la lógica de avance con Enter
-console.time("submit");
-const response = await fetch(WEB_APP_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(formData),
-});
-console.timeEnd("submit");
-
-  
   const handleKeyDown = (e, nextField) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Evita el envío del formulario al presionar Enter
@@ -99,14 +88,16 @@ console.timeEnd("submit");
       "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
 
     try {
-      const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      try {
+  console.time("submit"); // ⏱️ Empieza la medición
 
+  const response = await fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
       if (!response.ok) {
         throw new Error("La solicitud no fue exitosa.");
       }
