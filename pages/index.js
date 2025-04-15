@@ -89,12 +89,15 @@ export default function Home() {
 
     try {
       const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  method: "POST",
+  mode: "no-cors", // Agrega esto para evitar el preflight
+  headers: {
+    // Es posible que debas quitar o limitar los encabezados; por ejemplo:
+    "Content-Type": "text/plain", // Usa un valor simple permitido
+  },
+  body: JSON.stringify(formData),
+});
+
 
       if (!response.ok) {
         throw new Error("La solicitud no fue exitosa.");
