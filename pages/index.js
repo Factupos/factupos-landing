@@ -88,16 +88,14 @@ export default function Home() {
       "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
 
     try {
-      try {
-  console.time("submit"); // ⏱️ Empieza la medición
+      const response = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-  const response = await fetch(WEB_APP_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
       if (!response.ok) {
         throw new Error("La solicitud no fue exitosa.");
       }
