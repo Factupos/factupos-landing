@@ -20,6 +20,17 @@ export default function Home() {
   }
 
   // Maneja la lógica de avance con Enter
+console.time("submit");
+const response = await fetch(WEB_APP_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(formData),
+});
+console.timeEnd("submit");
+
+  
   const handleKeyDown = (e, nextField) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Evita el envío del formulario al presionar Enter
