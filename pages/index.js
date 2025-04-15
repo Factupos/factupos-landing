@@ -96,7 +96,6 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
 
-
       if (!response.ok) {
         throw new Error("La solicitud no fue exitosa.");
       }
