@@ -265,19 +265,19 @@ export default function Home() {
           <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3">
             {[
               {
-                img: "/images/restaurant.svg",
+                img: "/images/factupos-restaurante.png",
                 title: "Restaurantes",
                 desc: "Pedidos rápidos, cocina conectada y facturación en un clic.",
               },
               {
-                img: "/images/retail.svg",
+                img: "/images/factupos-supermercado.png",
                 title: "Retail",
                 desc: "Gestión de inventario inteligente y ventas omnicanal.",
               },
               {
-                img: "/images/servicios.svg",
-                title: "Servicios",
-                desc: "Agenda tus citas, factura y cobra desde cualquier lugar.",
+                img: "/images/factupos-rifas-oficina.png",
+                title: "Rifas y Sorteos",
+                desc: "Control total de boletas, pagos y participantes.",
               },
             ].map((c) => (
               <div
