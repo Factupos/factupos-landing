@@ -27,18 +27,19 @@ export default function Home() {
 
   const submit = async () => {
     if (sending) return;
+
     const name = nameRef.current.value.trim();
     const email = emailRef.current.value.trim();
     const phone = phoneRef.current.value.trim();
-    const role  = roleRef.current.value;
+    const role = roleRef.current.value;
 
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const phoneOk = /^\d+$/.test(phone);
 
-    if (!name)  return alert("😊 ¡Cuéntanos tu nombre para saludarte!");
-    if (!emailOk)  return alert("📧 Revisa tu correo, parece incompleto…");
-    if (!phoneOk)  return alert("📞 El teléfono solo debe tener números.");
-    if (!role)  return alert("🙋‍♀️ Selecciona tu perfil para ayudarte mejor.");
+    if (!name) return alert("😊 ¡Cuéntanos tu nombre para saludarte!");
+    if (!emailOk) return alert("📧 Revisa tu correo, parece incompleto…");
+    if (!phoneOk) return alert("📞 El teléfono solo debe tener números.");
+    if (!role) return alert("🙋‍♀️ Selecciona tu perfil para ayudarte mejor.");
 
     setSending(true);
     try {
@@ -53,11 +54,13 @@ export default function Home() {
       if (!res.ok) throw new Error();
 
       // limpiar y cerrar modal
-      [nameRef, emailRef, phoneRef].forEach(r => r.current.value = "");
+      [nameRef, emailRef, phoneRef].forEach((r) => (r.current.value = ""));
       roleRef.current.value = "";
       setModalOpen(false);
     } catch (err) {
-      alert("🚨 Tuvimos un inconveniente enviando tus datos. Intenta nuevamente.");
+      alert(
+        "🚨 Tuvimos un inconveniente enviando tus datos. Intenta nuevamente."
+      );
     } finally {
       setSending(false);
     }
@@ -86,11 +89,11 @@ export default function Home() {
             >
               ✕
             </button>
-            <h2 className="text-2xl font-extrabold mb-6 text-blue-700 text-center">
+            <h2 className="text-2xl font-extrabold mb-6 text-primary-600 text-center">
               ¡Conversemos! 💬
             </h2>
             <form
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault();
                 submit();
               }}
@@ -102,8 +105,8 @@ export default function Home() {
                 <input
                   ref={nameRef}
                   placeholder="Tu nombre"
-                  onKeyDown={e => jump(e, emailRef)}
-                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  onKeyDown={(e) => jump(e, emailRef)}
+                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </label>
               {/* CORREO */}
@@ -113,8 +116,8 @@ export default function Home() {
                   ref={emailRef}
                   type="email"
                   placeholder="hola@ejemplo.com"
-                  onKeyDown={e => jump(e, phoneRef)}
-                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  onKeyDown={(e) => jump(e, phoneRef)}
+                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </label>
               {/* TELÉFONO */}
@@ -124,8 +127,8 @@ export default function Home() {
                   ref={phoneRef}
                   type="tel"
                   placeholder="3001234567"
-                  onKeyDown={e => jump(e, roleRef)}
-                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  onKeyDown={(e) => jump(e, roleRef)}
+                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </label>
               {/* PERFIL */}
@@ -133,8 +136,8 @@ export default function Home() {
                 ¿Con qué perfil te identificas?
                 <select
                   ref={roleRef}
-                  onKeyDown={e => jump(e, null)}
-                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  onKeyDown={(e) => jump(e, null)}
+                  className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="">-- Selecciona una opción --</option>
                   <option value="Empresario">Empresario</option>
@@ -146,7 +149,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={sending}
-                className="relative overflow-hidden flex items-center justify-center w-full py-3 bg-gradient-to-r from-sky-500 to-blue-700 text-white font-bold rounded-xl hover:opacity-90 disabled:opacity-60"
+                className="relative overflow-hidden flex items-center justify-center w-full py-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white font-bold rounded-xl hover:opacity-90 disabled:opacity-60"
               >
                 {sending && (
                   <span className="absolute left-4 flex items-center justify-center">
@@ -154,7 +157,9 @@ export default function Home() {
                     <span className="absolute inline-flex h-2 w-2 rounded-full bg-white"></span>
                   </span>
                 )}
-                <span className="pl-4">{sending ? "Enviando…" : "¡Quiero más info!"}</span>
+                <span className="pl-4">
+                  {sending ? "Enviando…" : "¡Quiero más info!"}
+                </span>
               </button>
             </form>
           </motion.div>
@@ -163,19 +168,39 @@ export default function Home() {
     </AnimatePresence>
   );
 
-  const ReopenBtn = !modalOpen && (
-    <button
-      onClick={() => setModalOpen(true)}
-      className="fixed bottom-5 left-5 z-40 bg-gradient-to-r from-sky-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
+  const ReopenBtn =
+    !modalOpen && (
+      <button
+        onClick={() => setModalOpen(true)}
+        className="fixed bottom-5 left-5 z-40 bg-gradient-to-r from-primary-500 to-primary-700 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
+      >
+        Formulario
+      </button>
+    );
+
+  const WhatsappButton = (
+    <a
+      href="https://wa.me/573136759329"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chatea con nosotros en WhatsApp"
+      className="fixed bottom-5 right-5 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-2xl hover:scale-110 transition"
     >
-      Formulario
-    </button>
+      {/* Ícono WhatsApp */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        className="w-8 h-8 fill-white"
+      >
+        <path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.44 2.04 7.75L0 32l8.46-2.22C10.66 30.97 13.26 32 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm0 29.12c-2.46 0-4.77-.64-6.8-1.75l-.48-.28-5.02 1.32 1.34-4.88-.31-.5C3.65 21.23 3.07 18.67 3.07 16 3.07 8.98 8.98 3.07 16 3.07S28.93 8.98 28.93 16 23.02 28.93 16 28.93zm8.4-11.63c-.43-.22-2.53-1.25-2.92-1.4-.39-.14-.67-.22-.96.22-.29.43-1.1 1.4-1.34 1.68-.24.29-.49.32-.92.11-.43-.22-1.82-.67-3.46-2.14-1.28-1.14-2.14-2.53-2.39-2.96-.25-.43-.03-.66.19-.88.19-.19.43-.49.64-.74.22-.25.29-.43.43-.71.14-.29.07-.54-.04-.75-.11-.22-.96-2.3-1.32-3.16-.35-.85-.71-.74-.96-.76-.25-.02-.54-.02-.82-.02-.29 0-.75.11-1.14.54-.39.43-1.49 1.46-1.49 3.56s1.53 4.13 1.75 4.42c.22.29 3.01 4.6 7.3 6.46 1.02.44 1.81.7 2.42.9 1.02.33 1.95.28 2.68.17.82-.12 2.53-1.03 2.89-2.03.36-1 .36-1.86.25-2.03-.11-.17-.39-.28-.82-.49z" />
+      </svg>
+    </a>
   );
 
   /* ──────────────────────────────── SUB‑COMPONENTES ─────────────────────────── */
   const PricingCard = ({ title, price, features, cta }) => (
     <div className="rounded-2xl bg-white p-8 shadow-xl hover:shadow-2xl transition">
-      <h3 className="text-2xl font-extrabold text-blue-700 mb-4">{title}</h3>
+      <h3 className="text-2xl font-extrabold text-primary-600 mb-4">{title}</h3>
       <p className="text-4xl font-black text-gray-900 mb-4">{price}</p>
       <ul className="space-y-2 mb-6">
         {features.map((f) => (
@@ -187,7 +212,7 @@ export default function Home() {
       </ul>
       <a
         href="#!"
-        className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-lg font-semibold hover:opacity-90"
+        className="inline-block px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white rounded-lg font-semibold hover:opacity-90"
       >
         {cta}
       </a>
@@ -196,24 +221,26 @@ export default function Home() {
 
   /* ──────────────────────────────── RETURN ──────────────────────────────────── */
   return (
-    <main className="font-sans text-gray-800">
+    <main className="font-sans text-gray-800 scroll-smooth">
       {ModalForm}
       {ReopenBtn}
+      {WhatsappButton}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white">
-        <div className="max-w-6xl mx-auto px-6 py-32 text-center">
+      <header className="relative overflow-hidden bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 text-white">
+        <div className="max-w-5xl md:max-w-6xl mx-auto px-6 pt-36 pb-40 text-center">
           <Image
             src="/logo.svg"
             alt="FactuPOS"
-            width={120}
-            height={120}
-            className="mx-auto mb-6"
+            width={130}
+            height={130}
+            className="mx-auto mb-6 drop-shadow-lg"
           />
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-xl">
-            El software de facturación que evoluciona contigo
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-8 leading-tight drop-shadow-xl">
+            <span className="block">El software de facturación</span>
+            <span className="block">que evoluciona contigo</span>
           </h1>
-          <p className="text-xl md:text-2xl font-medium max-w-3xl mx-auto">
+          <p className="text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed">
             Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al
             siguiente nivel.
           </p>
@@ -250,7 +277,7 @@ export default function Home() {
                 className="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50"
               >
                 <Image src={c.img} alt={c.title} width={80} height={80} className="mb-4" />
-                <h3 className="text-2xl font-bold mb-2 text-blue-700">{c.title}</h3>
+                <h3 className="text-2xl font-bold mb-2 text-primary-600">{c.title}</h3>
                 <p>{c.desc}</p>
               </div>
             ))}
@@ -259,27 +286,41 @@ export default function Home() {
       </section>
 
       {/* PLANES */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-100">
+      <section className="py-20 bg-gradient-to-br from-primary-50 via-white to-primary-100">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-900">Planes sin letra pequeña</h2>
+          <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
+            Planes sin letra pequeña
+          </h2>
           <div className="grid md:grid-cols-3 gap-10">
             <PricingCard
               title="Básico"
               price="$59.000/mes"
               cta="Comenzar"
-              features={["50 facturas mensuales", "Soporte chat", "Actualizaciones automáticas"]}
+              features={[
+                "50 facturas mensuales",
+                "Soporte chat",
+                "Actualizaciones automáticas",
+              ]}
             />
             <PricingCard
               title="Pro"
               price="$99.000/mes"
               cta="Probar gratis"
-              features={["Ilimitado", "Catálogo de productos", "Soporte 24/7"]}
+              features={[
+                "Ilimitado",
+                "Catálogo de productos",
+                "Soporte 24/7",
+              ]}
             />
             <PricingCard
               title="Empresarial"
               price="A la medida"
               cta="Contactar"
-              features={["Usuarios ilimitados", "Integraciones API", "Gerente de cuenta"]}
+              features={[
+                "Usuarios ilimitados",
+                "Integraciones API",
+                "Gerente de cuenta",
+              ]}
             />
           </div>
         </div>
@@ -288,14 +329,28 @@ export default function Home() {
       {/* FAQ */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-extrabold mb-6 text-gray-900">Preguntas frecuentes</h2>
+          <h2 className="text-4xl font-extrabold mb-6 text-gray-900">
+            Preguntas frecuentes
+          </h2>
           <div className="space-y-4 text-left max-w-3xl mx-auto">
             {[
-              ["¿Cumple con la DIAN?", "Sí, estamos 100 % autorizados y certificados."],
-              ["¿Hay contrato de permanencia?", "No hay contratos ni cláusulas ocultas; cancela cuando quieras."],
-              ["¿Puedo migrar desde otro software?", "Contamos con equipo de migración gratuito."],
+              [
+                "¿Cumple con la DIAN?",
+                "Sí, estamos 100 % autorizados y certificados.",
+              ],
+              [
+                "¿Hay contrato de permanencia?",
+                "No hay contratos ni cláusulas ocultas; cancela cuando quieras.",
+              ],
+              [
+                "¿Puedo migrar desde otro software?",
+                "Contamos con equipo de migración gratuito.",
+              ],
             ].map(([q, a]) => (
-              <details key={q} className="p-4 border border-gray-200 rounded-lg cursor-pointer open:bg-blue-50">
+              <details
+                key={q}
+                className="p-4 border border-gray-200 rounded-lg cursor-pointer open:bg-primary-50"
+              >
                 <summary className="font-semibold">{q}</summary>
                 <p className="mt-2 text-gray-700">{a}</p>
               </details>
@@ -308,15 +363,33 @@ export default function Home() {
       <footer className="bg-gray-900 text-gray-200 py-10">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           <div>
-            <Image src="/logo.svg" alt="logo" width={100} height={100} className="mb-4" />
+            <Image
+              src="/logo.svg"
+              alt="logo"
+              width={100}
+              height={100}
+              className="mb-4"
+            />
             <p>Simplificamos tu facturación, impulsamos tu negocio.</p>
           </div>
           <nav>
             <h3 className="font-bold mb-2">Empresa</h3>
             <ul className="space-y-1">
-              <li><a href="#" className="hover:text-white">Sobre nosotros</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
-              <li><a href="#" className="hover:text-white">Soporte</a></li>
+              <li>
+                <a href="#" className="hover:text-white">
+                  Sobre nosotros
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white">
+                  Soporte
+                </a>
+              </li>
             </ul>
           </nav>
           <div>
@@ -324,13 +397,44 @@ export default function Home() {
             <p>soporte@factupos.co</p>
             <p>+57 313 675 9329</p>
             <div className="mt-4 flex space-x-4">
-              <a href="https://wa.me/573136759329" className="hover:text-green-400">WhatsApp</a>
-              <a href="https://github.com/Factupos" className="hover:text-white">GitHub</a>
+              <a
+                href="https://wa.me/573136759329"
+                className="hover:text-emerald-400"
+              >
+                WhatsApp
+              </a>
+              <a href="https://github.com/Factupos" className="hover:text-white">
+                GitHub
+              </a>
             </div>
           </div>
         </div>
-        <p className="text-center mt-10 text-sm">© {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.</p>
+        <p className="text-center mt-10 text-sm">
+          © {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.
+        </p>
       </footer>
     </main>
   );
 }
+
+/* ──────────────────────────────── TAILWIND EXTENDED COLORS ───────────────────
+Añade estas extensiones en tu tailwind.config.js para mantener coherencia cromática
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: "#fff6eb",
+          100: "#ffe9cc",
+          200: "#ffd9a3",
+          300: "#ffc97a",
+          400: "#ffb84d",
+          500: "#ff9c1a", // tono principal naranja‑amarillo del logotipo
+          600: "#ff8c00",
+          700: "#e57d00",
+        },
+      },
+    },
+  },
+};
+────────────────────────────────────────────────────────────────────────────*/
