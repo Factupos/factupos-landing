@@ -1,323 +1,370 @@
-// Home.jsx
-import { useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const [sending, setSending] = useState(false);
 
-  // Referencias a cada campo para manejar el foco secuencial con Enter
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
   const roleRef = useRef(null);
 
-  // Cuando el componente se monta, enfocamos el campo de nombre
-  // (Usa un efecto si estás en Next.js de la forma adecuada, por ejemplo con useEffect).
-  // Aquí, para simplicidad, podríamos hacer:
-  if (typeof window !== "undefined") {
-    setTimeout(() => {
-      nameRef.current?.focus();
-    }, 100);
-  }
+  useEffect(() => {
+    if (showForm) nameRef.current?.focus();
+  }, [showForm]);
 
-  // Maneja la lógica de avance con Enter
-  const handleKeyDown = (e, nextField) => {
+  const handleKey = (e, next) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Evita el envío del formulario al presionar Enter
-      if (nextField) {
-        nextField.current?.focus();
-      } else {
-        // Si no hay siguiente campo, envía el formulario
-        handleSubmit(e);
-      }
+      e.preventDefault();
+      next ? next.current?.focus() : send();
     }
   };
 
-  // Función para manejar el envío del formulario
-  async function handleSubmit(e) {
-    // Si esta función se llama desde el Enter del último campo, revisa si e es un evento
-    if (e?.preventDefault) {
-      e.preventDefault();
-    }
+  const send = async () => {
+    if (sending) return;
 
-    // Evita doble envío si ya está cargando
-    if (isLoading) return;
-
-    setIsLoading(true);
-
-    // Recoger los valores de los campos y quitar espacios en blanco
     const name = nameRef.current.value.trim();
     const email = emailRef.current.value.trim();
     const phone = phoneRef.current.value.trim();
     const role = roleRef.current.value;
 
-    // Validaciones en la página
-    if (!name) {
-      alert("Por favor, ingresa tu nombre.");
-      setIsLoading(false);
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRe = /^\d+$/;
+
+    if (!name || !emailRe.test(email) || !phoneRe.test(phone) || !role) {
+      alert("Completa correctamente todos los campos");
       return;
     }
 
-    // Validación de correo con expresión regular sencilla
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      alert("Por favor, ingresa un correo electrónico válido.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validar que el teléfono contenga solo números
-    const phoneRegex = /^\d+$/;
-    if (!phone || !phoneRegex.test(phone)) {
-      alert("El teléfono debe contener solamente números.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validar que se seleccione un cargo
-    if (!role) {
-      alert("Por favor, selecciona tu perfil.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Crear objeto con los datos del formulario
-    const formData = { name, email, phone, role };
-
-    // URL de tu Web App de Google Apps Script o backend
-    const WEB_APP_URL =
-      "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario";
+    setSending(true);
 
     try {
-      const response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-      throw new Error("La solicitud no fue exitosa.");
-    }
-
-    // Al terminar sin errores, limpiamos el formulario SIN mostrar alert
-    nameRef.current.value = "";
-    emailRef.current.value = "";
-    phoneRef.current.value = "";
-    roleRef.current.value = "";
-    nameRef.current.focus();
-    } catch (error) {
-      console.error("Error al enviar datos:", error);
-      alert("Hubo un error al enviar tus datos.");
+      const res = await fetch(
+        "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, phone, role }),
+        }
+      );
+      if (!res.ok) throw new Error();
+      nameRef.current.value = "";
+      emailRef.current.value = "";
+      phoneRef.current.value = "";
+      roleRef.current.value = "";
+      setShowForm(false);
+    } catch {
+      alert("Error al enviar datos");
     } finally {
-      setIsLoading(false);
+      setSending(false);
     }
-  }
+  };
+
+  const modal = (
+    <AnimatePresence>
+      {showForm && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-2xl relative"
+          >
+            <button
+              onClick={() => setShowForm(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+            <h2 className="text-2xl font-extrabold mb-6 text-blue-700">
+              Solicita información
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                send();
+              }}
+              className="grid gap-4"
+            >
+              <input
+                ref={nameRef}
+                placeholder="Nombre"
+                onKeyDown={(e) => handleKey(e, emailRef)}
+                className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              <input
+                ref={emailRef}
+                type="email"
+                placeholder="Correo"
+                onKeyDown={(e) => handleKey(e, phoneRef)}
+                className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              <input
+                ref={phoneRef}
+                type="tel"
+                placeholder="Teléfono"
+                onKeyDown={(e) => handleKey(e, roleRef)}
+                className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              <select
+                ref={roleRef}
+                onKeyDown={(e) => handleKey(e, null)}
+                className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              >
+                <option value="">Perfil</option>
+                <option value="Empresario">Empresario</option>
+                <option value="Estudiante">Estudiante</option>
+                <option value="Cliente">Cliente</option>
+              </select>
+              <button
+                type="submit"
+                disabled={sending}
+                className="relative flex justify-center items-center w-full py-3 bg-gradient-to-r from-sky-500 to-blue-700 text-white font-bold rounded-xl hover:opacity-90 disabled:opacity-50"
+              >
+                {sending && (
+                  <span className="absolute -left-10 flex items-center">
+                    <span className="animate-ping inline-flex h-6 w-6 rounded-full bg-white/70 mr-1"></span>
+                    <span className="inline-flex h-3 w-3 rounded-full bg-white"></span>
+                  </span>
+                )}
+                {sending ? "Enviando..." : "Enviar"}
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
+  const reopenBtn = (
+    <button
+      onClick={() => setShowForm(true)}
+      className="fixed bottom-5 left-5 z-40 bg-gradient-to-r from-sky-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
+    >
+      Solicitar información
+    </button>
+  );
+
+  const PricingCard = ({ title, price, features, cta }) => (
+    <div className="rounded-2xl bg-white p-8 shadow-xl hover:shadow-2xl transition">
+      <h3 className="text-2xl font-extrabold text-blue-700 mb-4">{title}</h3>
+      <p className="text-4xl font-black text-gray-900 mb-4">{price}</p>
+      <ul className="space-y-2 mb-6">
+        {features.map((f) => (
+          <li key={f} className="flex items-start">
+            <span className="text-green-500 mr-2">✔︎</span>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+      <a
+        href="#!"
+        className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-lg font-semibold hover:opacity-90"
+      >
+        {cta}
+      </a>
+    </div>
+  );
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800">
-      {/* Sección de cabecera con gradiente más vibrante */}
-      <section className="text-center py-20 px-6 bg-gradient-to-r from-cyan-500 to-blue-800 text-white">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
-          ¡Facturación Electrónica Moderna para Tu Negocio!
-        </h1>
-        <p className="text-lg md:text-xl mb-8 font-semibold">
-          Fácil, rápida y 100% legal en Colombia
-        </p>
+    <main className="font-sans text-gray-800">
+      {modal}
+      {!showForm && reopenBtn}
 
-        {/* FORMULARIO */}
-        <form
-          className="max-w-md mx-auto grid gap-6 text-gray-900 bg-white p-6 rounded-xl shadow-2xl"
-          onSubmit={handleSubmit}
-        >
-          {/* Nombre */}
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              ¿Cómo te llamas?
-            </label>
-            <input
-              ref={nameRef}
-              type="text"
-              name="name"
-              className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              onKeyDown={(e) => handleKeyDown(e, emailRef)}
-            />
-          </div>
+      <header className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white">
+        <div className="max-w-6xl mx-auto px-6 py-32 text-center">
+          <Image
+            src="/logo.svg"
+            alt="FactuPOS"
+            width={120}
+            height={120}
+            className="mx-auto mb-6"
+          />
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-6 drop-shadow-xl">
+            El software de facturación que evoluciona contigo
+          </h1>
+          <p className="text-xl md:text-2xl font-medium max-w-3xl mx-auto">
+            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al
+            siguiente nivel.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-white rounded-t-3xl"></div>
+      </header>
 
-          {/* Correo */}
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              ¿Cuál es tu correo electrónico?
-            </label>
-            <input
-              ref={emailRef}
-              type="email"
-              name="email"
-              className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              onKeyDown={(e) => handleKeyDown(e, phoneRef)}
-            />
-          </div>
-
-          {/* Teléfono */}
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              ¿Cuál es tu número de teléfono?
-            </label>
-            <input
-              ref={phoneRef}
-              type="tel"
-              name="phone"
-              className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              onKeyDown={(e) => handleKeyDown(e, roleRef)}
-            />
-          </div>
-
-          {/* Cargo/Perfil */}
-          <div className="flex flex-col">
-            <label className="mb-1 font-semibold text-gray-700">
-              ¿Cuál es tu perfil?
-            </label>
-            <select
-              ref={roleRef}
-              name="role"
-              className="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              onKeyDown={(e) => handleKeyDown(e, null)}
-            >
-              <option value="">-- Selecciona tu perfil --</option>
-              <option value="Empresario">Empresario</option>
-              <option value="Estudiante">Estudiante</option>
-              <option value="Cliente">Cliente</option>
-            </select>
-          </div>
-
-          {/* Botón de Enviar */}
-          <button
-  type="submit"
-  className="relative flex items-center justify-center bg-gradient-to-r from-sky-500 to-blue-700 text-white py-3 rounded-xl font-bold tracking-wide hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-  disabled={isLoading}
->
-  {isLoading && (
-    <span className="absolute left-4">
-      <span className="block w-5 h-5 border-2 border-t-2 border-white rounded-full animate-spin"></span>
-    </span>
-  )}
-  <span>{isLoading ? "Enviando..." : "Solicitar información"}</span>
-</button>
-
-          {/* Animación de carga (ejemplo sencillo con texto) */}
-          {isLoading && (
-            <div className="text-sky-600 font-semibold text-center">
-              Guardando tu información, por favor espera...
-            </div>
-          )}
-        </form>
-      </section>
-
-      {/* Sección con tarjetas */}
-      <section className="py-16 bg-blue-50 text-gray-800">
+      <section className="-mt-24 relative z-10 bg-white">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12 text-blue-900">
-            ¿Por qué usar FactuPOS?
+          <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
+            Soluciones para cada industria
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
-              <h3 className="text-xl font-semibold mb-2 text-sky-700">
-                Cumple con la DIAN
-              </h3>
-              <p className="leading-relaxed">
-                Facturación electrónica totalmente legal y actualizada a la
-                normativa colombiana.
-              </p>
-            </div>
-            <div className="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
-              <h3 className="text-xl font-semibold mb-2 text-sky-700">
-                Fácil y rápida
-              </h3>
-              <p className="leading-relaxed">
-                Emite tus facturas en segundos desde cualquier dispositivo
-                conectado.
-              </p>
-            </div>
-            <div className="p-6 bg-white rounded-xl shadow-xl hover:shadow-2xl transition-shadow">
-              <h3 className="text-xl font-semibold mb-2 text-sky-700">
-                Soporte confiable
-              </h3>
-              <p className="leading-relaxed">
-                Te acompañamos en cada paso para que tengas todo funcionando sin
-                errores.
-              </p>
-            </div>
+            {[
+              {
+                img: "/images/restaurant.svg",
+                title: "Restaurantes",
+                desc: "Pedidos rápidos, cocina conectada y facturación en un clic.",
+              },
+              {
+                img: "/images/retail.svg",
+                title: "Retail",
+                desc: "Gestión de inventario inteligente y ventas omnicanal.",
+              },
+              {
+                img: "/images/servicios.svg",
+                title: "Servicios",
+                desc: "Agenda tus citas, factura y cobra desde cualquier lugar.",
+              },
+            ].map((c) => (
+              <div
+                key={c.title}
+                className="p-8 rounded-2xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50"
+              >
+                <Image
+                  src={c.img}
+                  alt={c.title}
+                  width={80}
+                  height={80}
+                  className="mb-4"
+                />
+                <h3 className="text-2xl font-bold mb-2 text-blue-700">
+                  {c.title}
+                </h3>
+                <p>{c.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Logos de empresas */}
-      <section className="py-16 bg-white text-center">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 text-gray-700">
-          Empresas que confían en nosotros
-        </h2>
-        <div className="flex justify-center gap-8 flex-wrap">
-          <img
-            src="/images/logo1.png"
-            alt="Logo 1"
-            className="h-12 grayscale hover:grayscale-0 transition duration-300"
-          />
-          <img
-            src="/images/logo2.png"
-            alt="Logo 2"
-            className="h-12 grayscale hover:grayscale-0 transition duration-300"
-          />
-          <img
-            src="/images/logo3.png"
-            alt="Logo 3"
-            className="h-12 grayscale hover:grayscale-0 transition duration-300"
-          />
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-100">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
+            Planes sin letra pequeña
+          </h2>
+          <div className="grid md:grid-cols-3 gap-10">
+            <PricingCard
+              title="Básico"
+              price="$59.000/mes"
+              cta="Comenzar"
+              features={[
+                "50 facturas mensuales",
+                "Soporte chat",
+                "Actualizaciones automáticas",
+              ]}
+            />
+            <PricingCard
+              title="Pro"
+              price="$99.000/mes"
+              cta="Probar gratis"
+              features={[
+                "Ilimitado",
+                "Catálogo de productos",
+                "Soporte 24/7",
+              ]}
+            />
+            <PricingCard
+              title="Empresarial"
+              price="A la medida"
+              cta="Contactar"
+              features={[
+                "Usuarios ilimitados",
+                "Integraciones API",
+                "Gerente de cuenta",
+              ]}
+            />
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 text-center">
-        <p>
-          &copy; {new Date().getFullYear()} FactuPOS. Todos los derechos
-          reservados.
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-extrabold mb-6 text-gray-900">
+            Preguntas frecuentes
+          </h2>
+          <div className="space-y-4 text-left max-w-3xl mx-auto">
+            {[
+              [
+                "¿Cumple con la DIAN?",
+                "Sí, estamos 100 % autorizados y certificados.",
+              ],
+              [
+                "¿Hay contrato de permanencia?",
+                "No hay contratos ni cláusulas ocultas; cancela cuando quieras.",
+              ],
+              [
+                "¿Puedo migrar desde otro software?",
+                "Contamos con equipo de migración gratuito.",
+              ],
+            ].map(([q, a]) => (
+              <details
+                key={q}
+                className="p-4 border border-gray-200 rounded-lg cursor-pointer open:bg-blue-50"
+              >
+                <summary className="font-semibold">{q}</summary>
+                <p className="mt-2 text-gray-700">{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-gray-900 text-gray-200 py-10">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+          <div>
+            <Image
+              src="/logo.svg"
+              alt="logo"
+              width={100}
+              height={100}
+              className="mb-4"
+            />
+            <p>Simplificamos tu facturación, impulsamos tu negocio.</p>
+          </div>
+          <nav>
+            <h3 className="font-bold mb-2">Empresa</h3>
+            <ul className="space-y-1">
+              <li>
+                <a href="#" className="hover:text-white">
+                  Sobre nosotros
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-white">
+                  Soporte
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div>
+            <h3 className="font-bold mb-2">Contáctanos</h3>
+            <p>soporte@factupos.co</p>
+            <p>+57 313 675 9329</p>
+            <div className="mt-4 flex space-x-4">
+              <a href="https://wa.me/573136759329" className="hover:text-green-400">
+                WhatsApp
+              </a>
+              <a href="https://github.com/Factupos" className="hover:text-white">
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+        <p className="text-center mt-10 text-sm">
+          © {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.
         </p>
       </footer>
-
-      {/* Botón fijo de WhatsApp más llamativo y con efecto de hover/click */}
-      <a
-        href="https://wa.me/573136759329"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-2xl
-                  bg-gradient-to-tr from-green-400 to-green-600
-                  hover:scale-110 active:scale-90 transition-transform"
-        title="Escríbenos por WhatsApp"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 448 512"
-          className="h-7 w-7 text-white"
-          fill="currentColor"
-        >
-          <path d="M380.9 97.1C339 55.3 283.2 32 224 32 100.3 32 0 132.3 0 256c0 45.5 12 
-                  89.9 34.9 128.4L0 480l97.6-34.1c36.2 19.8 77.7 30.3 119.4 
-                  30.3 123.7 0 224-100.3 224-224 0-59.2-23.3-115-65.1-157.9zM224 
-                  438.6c-36.5 0-72.2-9.8-103.1-28.3l-7.3-4.3-57.8 
-                  20.2 19.5-56.5-4.6-7.4C49.6 325.8 38 292.6 38 256 
-                  38 141.1 141.1 38 256 38c114.9 0 218 103.1 218 
-                  218 0 114.9-103.1 218-218 218zm101.3-148.7c-5.5-2.8-32.4-16-37.5-17.9-5.1-1.9-8.8-2.8-12.5
-                  2.8-3.7 5.5-14.3 17.9-17.5 
-                  21.6-3.2 3.7-6.5 4.2-12 1.4-32.4-16-53.7-28.7-75-65-5.7-9.8 
-                  5.7-9.1 16.4-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.1-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2s-9.7
-                  1.4-14.8 6.9c-5.1 5.5-19.4 19-19.4 
-                  46.3s19.9 53.6 22.7 57.3c2.8 
-                  3.7 39.3 60.1 95.4 84.2 13.3 
-                  5.8 23.7 9.3 31.8 11.9 13.3 
-                  4.3 25.4 3.7 35 2.3 10.7-1.5 
-                  32.4-13.2 37.1-25.9 4.7-12.7 
-                  4.7-23.6 3.3-25.9-1.3-2.3-5-3.7-10.5-6.5z" />
-        </svg>
-      </a>
     </main>
   );
 }
