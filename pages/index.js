@@ -231,11 +231,13 @@ export default function Home() {
       <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white">
         <div className="max-w-7xl mx-auto px-6 py-36 text-center flex flex-col items-center">
           <Image
-            src="/logo.svg"
-            alt="FactuPOS"
-            width={140}
-            height={140}
-            className="mx-auto mb-8 drop-shadow-lg"
+      src="/images/factupos-logo.png"
+      alt="FactuPOS"
+      width={140}
+      height={140}
+      priority
+      quality={95}
+      className="mx-auto mb-8 drop-shadow-xl"
           />
           <h1 className="text-5xl md:text-6xl font-extrabold mb-8 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
