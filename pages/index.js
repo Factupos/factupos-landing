@@ -196,7 +196,7 @@ export default function Home() {
 
   /* Pricing Card Sub‑component */
   const PricingCard = ({ title, price, features, cta, openModal = false }) => (
-    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-blue-600">
+    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-blue-600 max-w-sm mx-auto">
       <h3 className="text-2xl font-extrabold text-blue-700 mb-4 text-center">
         {title}
       </h3>
@@ -236,7 +236,7 @@ export default function Home() {
       {WhatsAppBtn}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white pb-24">
+      <header className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white pb-20">
         {/* Logo superior izquierdo */}
         <div className="absolute top-4 left-4 lg:top-6 lg:left-8 flex items-center space-x-3">
           <Image
@@ -260,7 +260,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-8 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-6 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
           >
             ¡Probar ahora!
           </a>
@@ -274,7 +274,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Soluciones para cada industria
           </h2>
-          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {[
               {
                 img: "/images/factupos-restaurante.png",
@@ -304,19 +304,19 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
+                className="p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
               >
                 <Image
                   src={c.img}
                   alt={c.title}
-                  width={200}
-                  height={200}
-                  className="mb-6 rounded-2xl"
+                  width={240}
+                  height={240}
+                  className="mb-6 rounded-3xl shadow-lg object-cover"
                 />
-                <h3 className="text-xl font-bold mb-3 text-blue-700">
+                <h3 className="text-2xl font-bold mb-4 text-blue-700">
                   {c.title}
                 </h3>
-                <p className="leading-relaxed text-gray-700 text-sm">
+                <p className="leading-relaxed text-gray-700 text-base">
                   {c.desc}
                 </p>
               </div>
@@ -427,6 +427,9 @@ export default function Home() {
                 "Sin permanencia",
               ]}
             />
+          </div>
+          {/* Card centrado para Facturación Masiva */}
+          <div className="mt-12 flex justify-center">
             <PricingCard
               title="Facturación Masiva"
               price="$78 por documento"
