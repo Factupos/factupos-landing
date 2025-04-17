@@ -224,7 +224,7 @@ export default function Home() {
       {WhatsAppBtn}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white pb-20">
+      <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
         {/* Logo superior izquierdo */}
         <div className="absolute top-4 left-4 lg:top-6 lg:left-8 flex items-center space-x-3">
           <Image
@@ -292,7 +292,7 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center ${
+                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${
                   c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""
                 }`}
               >
@@ -303,7 +303,7 @@ export default function Home() {
                   height={240}
                   className="mb-6 rounded-3xl shadow-lg object-cover"
                 />
-                <h3 className="text-2xl font-bold mb-4 text-blue-700">
+                <h3 className="text-2xl font-bold mb-4 text-cyan-600">
                   {c.title}
                 </h3>
                 <p className="leading-relaxed text-gray-700 text-base">
