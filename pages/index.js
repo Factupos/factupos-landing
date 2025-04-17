@@ -86,7 +86,7 @@ export default function Home() {
             >
               ✕
             </button>
-            <h2 className="text-3xl font-extrabold mb-6 text-orange-600 text-center">
+            <h2 className="text-3xl font-extrabold mb-6 text-blue-700 text-center">
               ¡Conversemos! 💬
             </h2>
             <form
@@ -196,11 +196,11 @@ export default function Home() {
 
   /* Pricing Card Sub‑component */
   const PricingCard = ({ title, price, features, cta }) => (
-    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-orange-500">
-      <h3 className="text-2xl font-extrabold text-orange-600 mb-4 text-center">
+    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-blue-600">
+      <h3 className="text-2xl font-extrabold text-blue-700 mb-4 text-center">
         {title}
       </h3>
-      <p className="text-4xl font-black text-gray-900 mb-6 text-center">
+      <p className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
         {price}
       </p>
       <ul className="space-y-2 mb-8">
@@ -211,12 +211,14 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <a
-        href="#!"
-        className="block text-center px-6 py-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:opacity-90"
-      >
-        {cta}
-      </a>
+      {cta && (
+        <a
+          href="#!"
+          className="block text-center px-6 py-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:opacity-90"
+        >
+          {cta}
+        </a>
+      )}
     </div>
   );
 
@@ -228,14 +230,14 @@ export default function Home() {
       {WhatsAppBtn}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-cyan-600 via-sky-600 to-blue-800 text-white pb-16">
+      <header className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white pb-24">
         {/* Logo superior izquierdo */}
-        <div className="absolute top-6 left-6 lg:top-8 lg:left-10 flex items-center space-x-3">
+        <div className="absolute top-4 left-4 lg:top-6 lg:left-8 flex items-center space-x-3">
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
-            width={140}
-            height={140}
+            width={130}
+            height={130}
             priority
             quality={95}
             className="drop-shadow-xl"
@@ -243,13 +245,12 @@ export default function Home() {
           <span className="sr-only">FactuPOS</span>
         </div>
         {/* Contenido central */}
-        <div className="max-w-7xl mx-auto px-6 pt-56 md:pt-64 text-center flex flex-col items-center" id="hero">
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-8 leading-tight max-w-4xl">
+        <div className="max-w-6xl mx-auto px-6 pt-36 md:pt-40 text-center flex flex-col items-center" id="hero">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
-          <p className="text-2xl md:text-3xl font-medium max-w-4xl mx-auto leading-relaxed">
-            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al siguiente
-            nivel.
+          <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
+            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al siguiente nivel.
           </p>
           <a
             href="#planes"
@@ -258,11 +259,11 @@ export default function Home() {
             ¡Probar ahora!
           </a>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-white rounded-t-3xl" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-white rounded-t-3xl" />
       </header>
 
       {/* INDUSTRIAS */}
-      <section className="-mt-24 relative z-10 bg-white pb-20">
+      <section className="-mt-20 relative z-10 bg-white pb-20">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Soluciones para cada industria
@@ -297,16 +298,16 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-orange-500 flex flex-col items-center text-center"
+                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
               >
                 <Image
                   src={c.img}
                   alt={c.title}
-                  width={120}
-                  height={120}
+                  width={160}
+                  height={160}
                   className="mb-6 rounded-2xl"
                 />
-                <h3 className="text-xl font-bold mb-3 text-orange-600">
+                <h3 className="text-xl font-bold mb-3 text-blue-700">
                   {c.title}
                 </h3>
                 <p className="leading-relaxed text-gray-700 text-sm">
@@ -318,41 +319,102 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PLANES */}
+      {/* PLANES SOFTWARE */}
       <section id="planes" className="py-24 bg-gradient-to-br from-cyan-50 via-white to-orange-50">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
-            Planes sin letra pequeña
+            Planes de Software
           </h2>
-          <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             <PricingCard
-              title="Básico"
-              price="$59.000/mes"
-              cta="Comenzar"
+              title="FactuPOS Express"
+              price="$350.000 pago único"
+              cta="Adquirir ahora"
               features={[
-                "50 facturas mensuales",
-                "Soporte chat",
-                "Actualizaciones automáticas",
+                "Facturación electrónica ilimitada",
+                "Implementación y acompañamiento DIAN",
+                "Sin mensualidades, sin módulos extra",
+                "Actualizaciones básicas incluidas",
               ]}
             />
             <PricingCard
-              title="Pro"
-              price="$99.000/mes"
-              cta="Probar gratis"
+              title="FactuPOS Total"
+              price="$750.000 + $84.000/mes"
+              cta="Quiero todo"
               features={[
-                "Ilimitado",
-                "Catálogo de productos",
-                "Soporte 24/7",
+                "Todos los módulos activos (inventario, compras, reportes, ventas rápidas)",
+                "Hasta 9 dispositivos simultáneos",
+                "Facturación electrónica opcional incluida",
+                "Soporte ilimitado & alojamiento en la nube",
               ]}
             />
             <PricingCard
-              title="Empresarial"
-              price="A la medida"
-              cta="Contactar"
+              title="FactuPOS Rifas Pro"
+              price="$1.750.000 + $354.000/mes"
+              cta="Gestionar mis rifas"
               features={[
-                "Usuarios ilimitados",
-                "Integraciones API",
-                "Gerente de cuenta",
+                "Crea boletas digitales ilimitadas",
+                "Página web para venta de boletas en tiempo real",
+                "Mensajería automática por WhatsApp",
+                "Hasta 9 dispositivos & nube segura",
+              ]}
+            />
+            <PricingCard
+              title="FactuPOS Contador"
+              price="$90.000/mes por equipo"
+              cta="Empieza hoy"
+              features={[
+                "Suite completa de reportes contables",
+                "Sin costo de implementación",
+                "Soporte especializado para contadores",
+                "Actualizaciones premium continuas",
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* PACKS DOCUMENTOS ELECTRÓNICOS */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
+            Paquetes de Documentos Electrónicos
+          </h2>
+          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <PricingCard
+              title="Starter 450"
+              price="$50.000 / mes"
+              features={[
+                "450 documentos incluidos",
+                "Costo por doc: $111,11",
+                "Renovación mensual",
+              ]}
+            />
+            <PricingCard
+              title="Pro 1000"
+              price="$200.000 / 6 meses"
+              features={[
+                "1.000 documentos incluidos",
+                "Costo por doc: $200",
+                "Vigencia 6 meses",
+              ]}
+            />
+            <PricingCard
+              title="Enterprise 6000"
+              price="$630.000 / año"
+              features={[
+                "6.000 documentos incluidos",
+                "Costo por doc: $105",
+                "Vigencia 12 meses",
+              ]}
+            />
+            <PricingCard
+              title="Lite 100"
+              price="$25.000 / mes"
+              features={[
+                "100 documentos incluidos",
+                "Ideal para pequeñas empresas",
+                "Sin permanencia",
               ]}
             />
           </div>
@@ -360,7 +422,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-gradient-to-b from-orange-50 via-white to-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-extrabold mb-10 text-gray-900">
             Preguntas frecuentes
@@ -369,7 +431,7 @@ export default function Home() {
             {[
               [
                 "¿Cumple con la DIAN?",
-                "Sí, estamos 100 % autorizados y certificados.",
+                "Sí, estamos 100 % autorizados y certificados para emitir documentos electrónicos.",
               ],
               [
                 "¿Hay contrato de permanencia?",
@@ -377,7 +439,7 @@ export default function Home() {
               ],
               [
                 "¿Puedo migrar desde otro software?",
-                "Contamos con equipo de migración gratuito.",
+                "Nuestro equipo de expertos se encarga de migrar tu información sin costo adicional.",
               ],
             ].map(([q, a]) => (
               <details
