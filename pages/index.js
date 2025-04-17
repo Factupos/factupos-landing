@@ -177,7 +177,7 @@ export default function Home() {
   /* WhatsApp Floating Button */
   const WhatsAppBtn = (
     <a
-      href="https://wa.me/573136759329"
+      href="https://wa.me/573147330577"
       target="_blank"
       rel="noreferrer"
       className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
@@ -416,7 +416,7 @@ export default function Home() {
             <p>+57 313 675 9329</p>
             <div className="mt-6 flex space-x-6">
               <a
-                href="https://wa.me/573136759329"
+                href="https://wa.me/573147330577"
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
