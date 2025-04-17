@@ -13,8 +13,26 @@ export default function Home() {
   const roleRef = useRef(null);
 
   /* ──────────────────────────────── EFFECTS ──────────────────────────────────── */
+  // Mantener el foco en el primer campo cuando el modal está abierto
   useEffect(() => {
     if (modalOpen) nameRef.current?.focus();
+  }, [modalOpen]);
+
+  // Bloquear el scroll del fondo mientras el modal está abierto y
+  // asegurarnos de que la página vuelva al inicio al cerrar el modal
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const body = document.body;
+    if (modalOpen) {
+      body.classList.add("overflow-hidden");
+      // Garantiza que el usuario vea el inicio de la página al cargar
+      window.scrollTo(0, 0);
+    } else {
+      body.classList.remove("overflow-hidden");
+      // Al cerrar el modal nos aseguramos de estar en la parte superior
+      window.scrollTo(0, 0);
+    }
+    return () => body.classList.remove("overflow-hidden");
   }, [modalOpen]);
 
   /* ──────────────────────────────── HELPERS ──────────────────────────────────── */
@@ -207,7 +225,12 @@ export default function Home() {
       {cta && (
         <a
           href="#!"
-          onClick={(e) => { if (openModal) { e.preventDefault(); setModalOpen(true); } }}
+          onClick={(e) => {
+            if (openModal) {
+              e.preventDefault();
+              setModalOpen(true);
+            }
+          }}
           className="block text-center px-6 py-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:opacity-90"
         >
           {cta}
@@ -292,9 +315,7 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${
-                  c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""
-                }`}
+                className="p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center"
               >
                 <Image
                   src={c.img}
@@ -328,7 +349,7 @@ export default function Home() {
               cta="Adquirir ahora"
               openModal
               features={[
-                "Facturación electrónica ilimitada",
+                "Facturación electrónica",
                 "Implementación y acompañamiento DIAN",
                 "Sin mensualidades, sin módulos extra",
                 "Actualizaciones básicas incluidas",
