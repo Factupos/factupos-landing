@@ -23,20 +23,15 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const body = document.body;
-    const scrollTop = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-
     if (modalOpen) {
       body.classList.add("overflow-hidden");
-      scrollTop();
+      // Garantiza que el usuario vea el inicio de la página al cargar
+      window.scrollTo(0, 0);
     } else {
       body.classList.remove("overflow-hidden");
-      // Algunos navegadores móviles realizan un rebote después de modificar el scroll,
-      // por eso repetimos la llamada con un pequeño retraso para garantizar que el logo
-      // quede 100 % visible en la parte superior.
-      scrollTop();
-      setTimeout(scrollTop, 60);
+      // Al cerrar el modal nos aseguramos de estar en la parte superior
+      window.scrollTo(0, 0);
     }
-
     return () => body.classList.remove("overflow-hidden");
   }, [modalOpen]);
 
@@ -177,7 +172,9 @@ export default function Home() {
                     <span className="absolute inline-flex h-2 w-2 rounded-full bg-white"></span>
                   </span>
                 )}
-                <span className="pl-4">{sending ? "Enviando…" : "¡Quiero más info!"}</span>
+                <span className="pl-4">
+                  {sending ? "Enviando…" : "¡Quiero más info!"}
+                </span>
               </button>
             </form>
           </motion.div>
@@ -186,15 +183,14 @@ export default function Home() {
     </AnimatePresence>
   );
 
-  const ReopenBtn =
-    !modalOpen && (
-      <button
-        onClick={() => setModalOpen(true)}
-        className="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
-      >
-        Formulario
-      </button>
-    );
+  const ReopenBtn = !modalOpen && (
+    <button
+      onClick={() => setModalOpen(true)}
+      className="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
+    >
+      Formulario
+    </button>
+  );
 
   /* WhatsApp Floating Button */
   const WhatsAppBtn = (
@@ -202,18 +198,22 @@ export default function Home() {
       href="https://wa.me/573147330577"
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
+      className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
       aria-label="WhatsApp"
     >
-      <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={32} height={32} />
+      <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={36} height={36} />
     </a>
   );
 
   /* Pricing Card Sub‑component */
   const PricingCard = ({ title, price, features, cta, openModal = false }) => (
     <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-cyan-500 max-w-sm mx-auto">
-      <h3 className="text-2xl font-extrabold text-cyan-600 mb-4 text-center">{title}</h3>
-      <p className="text-3xl font-extrabold text-gray-900 mb-6 text-center">{price}</p>
+      <h3 className="text-2xl font-extrabold text-cyan-600 mb-4 text-center">
+        {title}
+      </h3>
+      <p className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+        {price}
+      </p>
       <ul className="space-y-2 mb-8">
         {features.map((f) => (
           <li key={f} className="flex items-start">
@@ -249,7 +249,7 @@ export default function Home() {
       {/* HERO */}
       <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
         {/* Logo responsive: centrado en móviles, izquierdo en desktop */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 lg:static lg:top-6 lg:left-0 lg:translate-x-0 flex items-center space-x-3">
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 lg:left-8 lg:transform-none lg:top-6 flex items-center space-x-3">
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
@@ -282,7 +282,9 @@ export default function Home() {
       {/* INDUSTRIAS */}
       <section className="-mt-20 relative z-10 bg-white pb-20">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">Soluciones para cada industria</h2>
+          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
+            Soluciones para cada industria
+          </h2>
           <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {[
               {
@@ -313,9 +315,7 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${
-                  c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""
-                }`}
+                className={p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""}}
               >
                 <Image
                   src={c.img}
@@ -324,8 +324,12 @@ export default function Home() {
                   height={240}
                   className="mb-6 rounded-3xl shadow-lg object-cover"
                 />
-                <h3 className="text-2xl font-bold mb-4 text-cyan-600">{c.title}</h3>
-                <p className="leading-relaxed text-gray-700 text-base">{c.desc}</p>
+                <h3 className="text-2xl font-bold mb-4 text-cyan-600">
+                  {c.title}
+                </h3>
+                <p className="leading-relaxed text-gray-700 text-base">
+                  {c.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -335,7 +339,9 @@ export default function Home() {
       {/* PLANES SOFTWARE */}
       <section id="planes" className="py-24 bg-gradient-to-br from-cyan-50 via-white to-orange-50">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">Planes de Software</h2>
+          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
+            Planes de Software
+          </h2>
           <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             <PricingCard
               title="FactuPOS Express"
@@ -392,27 +398,45 @@ export default function Home() {
       {/* PACKS DOCUMENTOS ELECTRÓNICOS */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">Paquetes de Documentos Electrónicos</h2>
+          <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
+            Paquetes de Documentos Electrónicos
+          </h2>
           <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <PricingCard
               title="Starter 450"
               price="$50.000 / mes"
-              features={["450 documentos incluidos", "Costo por doc: $111,11", "Renovación mensual"]}
+              features={[
+                "450 documentos incluidos",
+                "Costo por doc: $111,11",
+                "Renovación mensual",
+              ]}
             />
             <PricingCard
               title="Pro 1000"
               price="$200.000 / 6 meses"
-              features={["1.000 documentos incluidos", "Costo por doc: $200", "Vigencia 6 meses"]}
+              features={[
+                "1.000 documentos incluidos",
+                "Costo por doc: $200",
+                "Vigencia 6 meses",
+              ]}
             />
             <PricingCard
               title="Enterprise 6000"
               price="$630.000 / año"
-              features={["6.000 documentos incluidos", "Costo por doc: $105", "Vigencia 12 meses"]}
+              features={[
+                "6.000 documentos incluidos",
+                "Costo por doc: $105",
+                "Vigencia 12 meses",
+              ]}
             />
             <PricingCard
               title="Lite 100"
               price="$25.000 / mes"
-              features={["100 documentos incluidos", "Ideal para pequeñas empresas", "Sin permanencia"]}
+              features={[
+                "100 documentos incluidos",
+                "Ideal para pequeñas empresas",
+                "Sin permanencia",
+              ]}
             />
           </div>
           {/* Card centrado para Facturación Masiva */}
@@ -420,7 +444,11 @@ export default function Home() {
             <PricingCard
               title="Facturación Masiva"
               price="$78 por documento"
-              features={["Más de 2.000 documentos al mes", "Costo fijo por documento: $78", "Soporte prioritario incluido"]}
+              features={[
+                "Más de 2.000 documentos al mes",
+                "Costo fijo por documento: $78",
+                "Soporte prioritario incluido",
+              ]}
             />
           </div>
         </div>
@@ -429,7 +457,9 @@ export default function Home() {
       {/* FAQ */}
       <section className="py-24 bg-gradient-to-b from-orange-50 via-white to-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-extrabold mb-10 text-gray-900">Preguntas frecuentes</h2>
+          <h2 className="text-4xl font-extrabold mb-10 text-gray-900">
+            Preguntas frecuentes
+          </h2>
           <div className="space-y-4 text-left max-w-3xl mx-auto">
             {[
               [
@@ -445,7 +475,10 @@ export default function Home() {
                 "Nuestro equipo de expertos se encarga de migrar tu información sin costo adicional.",
               ],
             ].map(([q, a]) => (
-              <details key={q} className="p-6 border border-gray-200 rounded-2xl cursor-pointer open:bg-orange-50">
+              <details
+                key={q}
+                className="p-6 border border-gray-200 rounded-2xl cursor-pointer open:bg-orange-50"
+              >
                 <summary className="font-semibold text-gray-900">{q}</summary>
                 <p className="mt-3 text-gray-700 leading-relaxed">{a}</p>
               </details>
@@ -458,8 +491,16 @@ export default function Home() {
       <footer className="bg-gray-900 text-gray-200 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-6 grid gap-14 sm:grid-cols-2 md:grid-cols-3">
           <div>
-            <Image src="/logo.svg" alt="FactuPOS" width={110} height={110} className="mb-6" />
-            <p className="leading-relaxed">Simplificamos tu facturación, impulsamos tu negocio.</p>
+            <Image
+              src="/logo.svg"
+              alt="FactuPOS"
+              width={110}
+              height={110}
+              className="mb-6"
+            />
+            <p className="leading-relaxed">
+              Simplificamos tu facturación, impulsamos tu negocio.
+            </p>
           </div>
           <nav>
             <h3 className="font-bold mb-3 text-white">Empresa</h3>
@@ -498,7 +539,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <p className="text-center mt-14 text-sm">© {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.</p>
+        <p className="text-center mt-14 text-sm">
+          © {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.
+        </p>
       </footer>
     </main>
   );
