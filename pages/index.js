@@ -183,14 +183,7 @@ export default function Home() {
       className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
       aria-label="WhatsApp"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 32 32"
-        fill="white"
-        className="w-9 h-9"
-      >
-        <path d="M16 .063c-8.837 0-16 7.163-16 16 0 2.837.722 5.623 2.094 8.063L.063 32l8.063-2.094C10.377 30.277 13.163 31 16 31c8.837 0 16-7.163 16-16S24.837.063 16 .063zm0 2.938c7.146 0 12.999 5.853 12.999 12.999 0 7.146-5.853 12.999-12.999 12.999-2.746 0-5.404-.828-7.68-2.395l-.549-.364-4.791 1.244 1.277-4.666-.357-.573C3.618 20.718 2.938 18.428 2.938 16 2.938 8.854 8.854 3 16 3zm7.068 17.24c-.297-.148-1.759-.867-2.031-.965-.273-.099-.472-.148-.67.148-.199.297-.767.965-.94 1.164-.173.199-.347.223-.644.074-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.763-1.653-2.06-.173-.297-.019-.458.13-.606.134-.134.297-.347.446-.52.148-.173.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.148-.669-1.612-.916-2.214-.242-.58-.487-.502-.669-.513l-.57-.01c-.198 0-.52.074-.793.372-.273.297-1.041 1.017-1.041 2.48 0 1.462 1.065 2.875 1.213 3.074.148.198 2.1 3.205 5.072 4.492.708.305 1.262.487 1.693.623.712.227 1.36.195 1.872.118.571-.085 1.759-.718 2.006-1.413.248-.695.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347z" />
-      </svg>
+      <Image src="/images/whatsapp-logo.svg" alt="WhatsApp" width={36} height={36} />
     </a>
   );
 
@@ -251,7 +244,7 @@ export default function Home() {
           <span className="sr-only">FactuPOS</span>
         </div>
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-24 md:pt-28 text-center flex flex-col items-center" id="hero">
+        <div className="max-w-6xl mx-auto px-6 pt-16 md:pt-20 text-center flex flex-col items-center" id="hero">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
@@ -260,7 +253,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-6 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-4 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
           >
             ¡Probar ahora!
           </a>
@@ -304,7 +297,9 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
+                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center ${
+                  c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""
+                }`}
               >
                 <Image
                   src={c.img}
@@ -522,14 +517,7 @@ export default function Home() {
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 32 32"
-                  fill="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path d="M16 .063c-8.837 0-16 7.163-16 16 0 2.837.722 5.623 2.094 8.063L.063 32l8.063-2.094C10.377 30.277 13.163 31 16 31c8.837 0 16-7.163 16-16S24.837.063 16 .063zm0 2.938c7.146 0 12.999 5.853 12.999 12.999 0 7.146-5.853 12.999-12.999 12.999-2.746 0-5.404-.828-7.68-2.395l-.549-.364-4.791 1.244 1.277-4.666-.357-.573C3.618 20.718 2.938 18.428 2.938 16 2.938 8.854 8.854 3 16 3zm7.068 17.24c-.297-.148-1.759-.867-2.031-.965-.273-.099-.472-.148-.67.148-.199.297-.767.965-.94 1.164-.173.199-.347.223-.644.074-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.763-1.653-2.06-.173-.297-.019-.458.13-.606.134-.134.297-.347.446-.52.148-.173.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.148-.669-1.612-.916-2.214-.242-.58-.487-.502-.669-.513l-.57-.01c-.198 0-.52.074-.793.372-.273.297-1.041 1.017-1.041 2.48 0 1.462 1.065 2.875 1.213 3.074.148.198 2.1 3.205 5.072 4.492.708.305 1.262.487 1.693.623.712.227 1.36.195 1.872.118.571-.085 1.759-.718 2.006-1.413.248-.695.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                </svg>
+                <Image src="/images/whatsapp-logo.svg" alt="WhatsApp" width={24} height={24} className="mr-2" />
                 WhatsApp
               </a>
             </div>
