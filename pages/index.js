@@ -1,42 +1,54 @@
-import { useState, useRef, useEffect } from "react";
+/*  Home.tsx
+    Página principal de FactuPOS
+    —————————————————————————————————————————————————————————————— */
+
+import { useState, useRef, useLayoutEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Home() {
-  /* ──────────────────────────────── STATE & REFS ─────────────────────────────── */
+  /* ────────────────────────────── STATE & REFS ─────────────────────────────── */
   const [modalOpen, setModalOpen] = useState(true);
   const [sending, setSending] = useState(false);
 
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const phoneRef = useRef(null);
-  const roleRef = useRef(null);
+  const nameRef  = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const roleRef  = useRef<HTMLSelectElement>(null);
 
-  /* ──────────────────────────────── EFFECTS ──────────────────────────────────── */
+  /* ──────────────────────────────── EFFECTS ────────────────────────────────── */
   // Mantener el foco en el primer campo cuando el modal está abierto
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (modalOpen) nameRef.current?.focus();
   }, [modalOpen]);
 
-  // Bloquear el scroll del fondo mientras el modal está abierto y
-  // asegurarnos de que la página vuelva al inicio al cerrar el modal
-  useEffect(() => {
+  /*  
+      Bloquear el scroll del fondo mientras el modal está abierto y
+      garantizar que al cerrarlo la vista comience siempre en la parte
+      superior (especialmente en dispositivos móviles).
+  */
+  useLayoutEffect(() => {
     if (typeof window === "undefined") return;
+
     const body = document.body;
+
     if (modalOpen) {
       body.classList.add("overflow-hidden");
-      // Garantiza que el usuario vea el inicio de la página al cargar
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "auto" });
     } else {
       body.classList.remove("overflow-hidden");
-      // Al cerrar el modal nos aseguramos de estar en la parte superior
-      window.scrollTo(0, 0);
+      // Pequeño timeout para esperar a que se re‑pinte la página y evitar
+      // saltos de anclaje en móviles con barra de URL flotante.
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 50);
     }
+
     return () => body.classList.remove("overflow-hidden");
   }, [modalOpen]);
 
-  /* ──────────────────────────────── HELPERS ──────────────────────────────────── */
-  const jump = (e, next) => {
+  /* ──────────────────────────────── HELPERS ────────────────────────────────── */
+  const jump = (e: React.KeyboardEvent, next: React.RefObject<HTMLInputElement | HTMLSelectElement> | null) => {
     if (e.key === "Enter") {
       e.preventDefault();
       next ? next.current?.focus() : submit();
@@ -45,43 +57,44 @@ export default function Home() {
 
   const submit = async () => {
     if (sending) return;
-    const name = nameRef.current.value.trim();
-    const email = emailRef.current.value.trim();
-    const phone = phoneRef.current.value.trim();
-    const role = roleRef.current.value;
+
+    const name  = nameRef.current?.value.trim()  ?? "";
+    const email = emailRef.current?.value.trim() ?? "";
+    const phone = phoneRef.current?.value.trim() ?? "";
+    const role  = roleRef.current?.value        ?? "";
 
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const phoneOk = /^\d+$/.test(phone);
 
-    if (!name) return alert("😊 ¡Cuéntanos tu nombre para saludarte!");
+    if (!name)   return alert("😊 ¡Cuéntanos tu nombre para saludarte!");
     if (!emailOk) return alert("📧 Revisa tu correo, parece incompleto…");
     if (!phoneOk) return alert("📞 El teléfono solo debe tener números.");
-    if (!role) return alert("🙋‍♀️ Selecciona tu perfil para ayudarte mejor.");
+    if (!role)    return alert("🙋‍♀️ Selecciona tu perfil para ayudarte mejor.");
 
     setSending(true);
     try {
       const res = await fetch(
         "https://n8n-docker-render-1.onrender.com/webhook/contacto-formulario",
         {
-          method: "POST",
+          method : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, phone, role }),
+          body   : JSON.stringify({ name, email, phone, role }),
         }
       );
       if (!res.ok) throw new Error();
 
-      // limpiar y cerrar modal
-      [nameRef, emailRef, phoneRef].forEach((r) => (r.current.value = ""));
-      roleRef.current.value = "";
+      // Limpiar y cerrar modal
+      [nameRef, emailRef, phoneRef].forEach(r => { if (r.current) r.current.value = ""; });
+      if (roleRef.current) roleRef.current.value = "";
       setModalOpen(false);
-    } catch (err) {
+    } catch {
       alert("🚨 Tuvimos un inconveniente enviando tus datos. Intenta nuevamente.");
     } finally {
       setSending(false);
     }
   };
 
-  /* ──────────────────────────────── COMPONENTS ─────────────────────────────── */
+  /* ───────────────────────────── COMPONENTS ───────────────────────────────── */
   const ModalForm = (
     <AnimatePresence>
       {modalOpen && (
@@ -104,14 +117,13 @@ export default function Home() {
             >
               ✕
             </button>
+
             <h2 className="text-3xl font-extrabold mb-6 text-cyan-600 text-center">
               ¡Conversemos! 💬
             </h2>
+
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                submit();
-              }}
+              onSubmit={e => { e.preventDefault(); submit(); }}
               className="grid gap-5"
             >
               {/* NOMBRE */}
@@ -120,7 +132,7 @@ export default function Home() {
                 <input
                   ref={nameRef}
                   placeholder="Tu nombre"
-                  onKeyDown={(e) => jump(e, emailRef)}
+                  onKeyDown={e => jump(e, emailRef)}
                   className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
@@ -131,7 +143,7 @@ export default function Home() {
                   ref={emailRef}
                   type="email"
                   placeholder="hola@ejemplo.com"
-                  onKeyDown={(e) => jump(e, phoneRef)}
+                  onKeyDown={e => jump(e, phoneRef)}
                   className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
@@ -142,7 +154,7 @@ export default function Home() {
                   ref={phoneRef}
                   type="tel"
                   placeholder="3001234567"
-                  onKeyDown={(e) => jump(e, roleRef)}
+                  onKeyDown={e => jump(e, roleRef)}
                   className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
@@ -151,7 +163,7 @@ export default function Home() {
                 ¿Con qué perfil te identificas?
                 <select
                   ref={roleRef}
-                  onKeyDown={(e) => jump(e, null)}
+                  onKeyDown={e => jump(e, null)}
                   className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">-- Selecciona una opción --</option>
@@ -192,21 +204,38 @@ export default function Home() {
     </button>
   );
 
-  /* WhatsApp Floating Button */
+  /* WhatsApp Floating Button (ajuste para móviles) */
   const WhatsAppBtn = (
     <a
       href="https://wa.me/573147330577"
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
+      className="fixed bottom-6 right-4 sm:right-6 z-40 flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
       aria-label="WhatsApp"
     >
-      <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={36} height={36} />
+      <Image
+        src="/images/whatsapp-icon-optimized.svg"
+        alt="WhatsApp"
+        width={32}
+        height={32}
+      />
     </a>
   );
 
   /* Pricing Card Sub‑component */
-  const PricingCard = ({ title, price, features, cta, openModal = false }) => (
+  const PricingCard = ({
+    title,
+    price,
+    features,
+    cta,
+    openModal = false,
+  }: {
+    title: string;
+    price: string;
+    features: string[];
+    cta?: string;
+    openModal?: boolean;
+  }) => (
     <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-cyan-500 max-w-sm mx-auto">
       <h3 className="text-2xl font-extrabold text-cyan-600 mb-4 text-center">
         {title}
@@ -215,7 +244,7 @@ export default function Home() {
         {price}
       </p>
       <ul className="space-y-2 mb-8">
-        {features.map((f) => (
+        {features.map(f => (
           <li key={f} className="flex items-start">
             <span className="text-green-500 mr-2">✔︎</span>
             <span>{f}</span>
@@ -225,7 +254,7 @@ export default function Home() {
       {cta && (
         <a
           href="#!"
-          onClick={(e) => {
+          onClick={e => {
             if (openModal) {
               e.preventDefault();
               setModalOpen(true);
@@ -239,7 +268,7 @@ export default function Home() {
     </div>
   );
 
-  /* ──────────────────────────────── RETURN ──────────────────────────────────── */
+  /* ──────────────────────────────── RETURN ─────────────────────────────────── */
   return (
     <main className="font-sans text-gray-800 scroll-smooth">
       {ModalForm}
@@ -248,8 +277,8 @@ export default function Home() {
 
       {/* HERO */}
       <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
-        {/* Logo responsive: centrado en móviles, izquierdo en desktop */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 lg:left-8 lg:transform-none lg:top-6 flex items-center space-x-3">
+        {/* Logo: centrado en móviles, alineado a la izquierda en pantallas ≥ 640 px */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:left-6 sm:translate-x-0 sm:top-6 flex items-center space-x-3">
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
@@ -261,13 +290,18 @@ export default function Home() {
           />
           <span className="sr-only">FactuPOS</span>
         </div>
+
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center" id="hero">
+        <div
+          className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center"
+          id="hero"
+        >
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
           <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
-            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al siguiente nivel.
+            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al
+            siguiente nivel.
           </p>
           <a
             href="#planes"
@@ -276,6 +310,7 @@ export default function Home() {
             ¡Probar ahora!
           </a>
         </div>
+
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-white rounded-t-3xl" />
       </header>
 
@@ -285,6 +320,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Soluciones para cada industria
           </h2>
+
           <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {[
               {
@@ -312,10 +348,14 @@ export default function Home() {
                 title: "Descarga Masiva DIAN",
                 desc: "Automatiza la obtención y organización de facturas electrónicas desde la DIAN.",
               },
-            ].map((c) => (
+            ].map(c => (
               <div
                 key={c.title}
-                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""}`}
+                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${
+                  c.title === "Descarga Masiva DIAN"
+                    ? "lg:col-span-2 lg:col-start-2"
+                    : ""
+                }`}
               >
                 <Image
                   src={c.img}
@@ -342,6 +382,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Planes de Software
           </h2>
+
           <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             <PricingCard
               title="FactuPOS Express"
@@ -401,6 +442,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Paquetes de Documentos Electrónicos
           </h2>
+
           <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <PricingCard
               title="Starter 450"
@@ -439,6 +481,7 @@ export default function Home() {
               ]}
             />
           </div>
+
           {/* Card centrado para Facturación Masiva */}
           <div className="mt-12 flex justify-center">
             <PricingCard
@@ -460,6 +503,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold mb-10 text-gray-900">
             Preguntas frecuentes
           </h2>
+
           <div className="space-y-4 text-left max-w-3xl mx-auto">
             {[
               [
@@ -502,6 +546,7 @@ export default function Home() {
               Simplificamos tu facturación, impulsamos tu negocio.
             </p>
           </div>
+
           <nav>
             <h3 className="font-bold mb-3 text-white">Empresa</h3>
             <ul className="space-y-2">
@@ -522,23 +567,32 @@ export default function Home() {
               </li>
             </ul>
           </nav>
+
           <div>
             <h3 className="font-bold mb-3 text-white">Contáctanos</h3>
             <p className="mb-1">factuposcolombia@gmail.com</p>
-            <p className="mb-1">+57 310 410 8508</p>
-            <p className="">+57 314 733 0577</p>
+            <p className="mb-1">+57 310 410 8508</p>
+            <p>+57 314 733 0577</p>
+
             <div className="mt-6 flex space-x-6">
               <a
                 href="https://wa.me/573147330577"
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
-                <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={24} height={24} className="mr-2" />
+                <Image
+                  src="/images/whatsapp-icon-optimized.svg"
+                  alt="WhatsApp"
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                />
                 WhatsApp
               </a>
             </div>
           </div>
         </div>
+
         <p className="text-center mt-14 text-sm">
           © {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.
         </p>
