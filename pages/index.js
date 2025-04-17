@@ -195,7 +195,7 @@ export default function Home() {
   );
 
   /* Pricing Card Sub‑component */
-  const PricingCard = ({ title, price, features, cta }) => (
+  const PricingCard = ({ title, price, features, cta, openModal = false }) => (
     <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-blue-600">
       <h3 className="text-2xl font-extrabold text-blue-700 mb-4 text-center">
         {title}
@@ -214,6 +214,12 @@ export default function Home() {
       {cta && (
         <a
           href="#!"
+          onClick={(e) => {
+            if (openModal) {
+              e.preventDefault();
+              setModalOpen(true);
+            }
+          }}
           className="block text-center px-6 py-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:opacity-90"
         >
           {cta}
@@ -245,8 +251,8 @@ export default function Home() {
           <span className="sr-only">FactuPOS</span>
         </div>
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-36 md:pt-40 text-center flex flex-col items-center" id="hero">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight max-w-4xl">
+        <div className="max-w-6xl mx-auto px-6 pt-24 md:pt-28 text-center flex flex-col items-center" id="hero">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
           <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
@@ -254,7 +260,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-10 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-8 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
           >
             ¡Probar ahora!
           </a>
@@ -298,13 +304,13 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
+                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-blue-600 flex flex-col items-center text-center"
               >
                 <Image
                   src={c.img}
                   alt={c.title}
-                  width={160}
-                  height={160}
+                  width={200}
+                  height={200}
                   className="mb-6 rounded-2xl"
                 />
                 <h3 className="text-xl font-bold mb-3 text-blue-700">
@@ -330,6 +336,7 @@ export default function Home() {
               title="FactuPOS Express"
               price="$350.000 pago único"
               cta="Adquirir ahora"
+              openModal
               features={[
                 "Facturación electrónica ilimitada",
                 "Implementación y acompañamiento DIAN",
@@ -341,6 +348,7 @@ export default function Home() {
               title="FactuPOS Total"
               price="$750.000 + $84.000/mes"
               cta="Quiero todo"
+              openModal
               features={[
                 "Todos los módulos activos (inventario, compras, reportes, ventas rápidas)",
                 "Hasta 9 dispositivos simultáneos",
@@ -352,6 +360,7 @@ export default function Home() {
               title="FactuPOS Rifas Pro"
               price="$1.750.000 + $354.000/mes"
               cta="Gestionar mis rifas"
+              openModal
               features={[
                 "Crea boletas digitales ilimitadas",
                 "Página web para venta de boletas en tiempo real",
@@ -363,6 +372,7 @@ export default function Home() {
               title="FactuPOS Contador"
               price="$90.000/mes por equipo"
               cta="Empieza hoy"
+              openModal
               features={[
                 "Suite completa de reportes contables",
                 "Sin costo de implementación",
@@ -380,7 +390,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Paquetes de Documentos Electrónicos
           </h2>
-          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             <PricingCard
               title="Starter 450"
               price="$50.000 / mes"
@@ -417,6 +427,15 @@ export default function Home() {
                 "Sin permanencia",
               ]}
             />
+            <PricingCard
+              title="Facturación Masiva 2000+"
+              price="$78 por doc (>2000/mes)"
+              features={[
+                "Consumo superior a 2000 documentos mensuales",
+                "Costo por documento: $78",
+                "Soporte prioritario incluido",
+              ]}
+            />
           </div>
         </div>
       </section>
@@ -431,7 +450,7 @@ export default function Home() {
             {[
               [
                 "¿Cumple con la DIAN?",
-                "Sí, estamos 100 % autorizados y certificados para emitir documentos electrónicos.",
+                "Sí, estamos 100 % autorizados y certificados para emitir documentos electrónicos.",
               ],
               [
                 "¿Hay contrato de permanencia?",
