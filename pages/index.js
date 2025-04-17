@@ -78,7 +78,7 @@ export default function Home() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            className="relative w-full max-w-lg p-8 bg-white rounded-3xl shadow-2xl border-t-8 border-cyan-500"
+            className="relative w-full max-w-lg p-8 bg-white rounded-3xl shadow-2xl border-t-8 border-orange-500"
           >
             <button
               onClick={() => setModalOpen(false)}
@@ -86,7 +86,7 @@ export default function Home() {
             >
               ✕
             </button>
-            <h2 className="text-3xl font-extrabold mb-6 text-cyan-600 text-center">
+            <h2 className="text-3xl font-extrabold mb-6 text-orange-600 text-center">
               ¡Conversemos! 💬
             </h2>
             <form
@@ -103,7 +103,7 @@ export default function Home() {
                   ref={nameRef}
                   placeholder="Tu nombre"
                   onKeyDown={(e) => jump(e, emailRef)}
-                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
               {/* CORREO */}
@@ -114,7 +114,7 @@ export default function Home() {
                   type="email"
                   placeholder="hola@ejemplo.com"
                   onKeyDown={(e) => jump(e, phoneRef)}
-                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
               {/* TELÉFONO */}
@@ -125,7 +125,7 @@ export default function Home() {
                   type="tel"
                   placeholder="3001234567"
                   onKeyDown={(e) => jump(e, roleRef)}
-                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </label>
               {/* PERFIL */}
@@ -134,7 +134,7 @@ export default function Home() {
                 <select
                   ref={roleRef}
                   onKeyDown={(e) => jump(e, null)}
-                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">-- Selecciona una opción --</option>
                   <option value="Empresario">Empresario</option>
@@ -168,7 +168,7 @@ export default function Home() {
   const ReopenBtn = !modalOpen && (
     <button
       onClick={() => setModalOpen(true)}
-      className="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
+      className="fixed bottom-6 left-6 z-40 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:scale-110 transition"
     >
       Formulario
     </button>
@@ -177,7 +177,7 @@ export default function Home() {
   /* WhatsApp Floating Button */
   const WhatsAppBtn = (
     <a
-      href="https://wa.me/573147330577"
+      href="https://wa.me/573104108508"
       target="_blank"
       rel="noreferrer"
       className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
@@ -196,8 +196,8 @@ export default function Home() {
 
   /* Pricing Card Sub‑component */
   const PricingCard = ({ title, price, features, cta }) => (
-    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-cyan-500">
-      <h3 className="text-2xl font-extrabold text-cyan-600 mb-4 text-center">
+    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-orange-500">
+      <h3 className="text-2xl font-extrabold text-orange-600 mb-4 text-center">
         {title}
       </h3>
       <p className="text-4xl font-black text-gray-900 mb-6 text-center">
@@ -228,17 +228,22 @@ export default function Home() {
       {WhatsAppBtn}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-36 text-center flex flex-col items-center">
+      <header className="relative overflow-hidden bg-gradient-to-br from-cyan-600 via-sky-600 to-blue-800 text-white pb-16">
+        {/* Logo superior izquierdo */}
+        <div className="absolute top-6 left-6 lg:top-8 lg:left-10 flex items-center space-x-3">
           <Image
-      src="/images/factupos-logo.png"
-      alt="FactuPOS"
-      width={140}
-      height={140}
-      priority
-      quality={95}
-      className="mx-auto mb-8 drop-shadow-xl"
+            src="/images/factupos-logo.png"
+            alt="FactuPOS"
+            width={140}
+            height={140}
+            priority
+            quality={95}
+            className="drop-shadow-xl"
           />
+          <span className="sr-only">FactuPOS</span>
+        </div>
+        {/* Contenido central */}
+        <div className="max-w-7xl mx-auto px-6 pt-56 md:pt-64 text-center flex flex-col items-center" id="hero">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-8 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
@@ -248,7 +253,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-10 inline-block bg-white text-cyan-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-10 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
           >
             ¡Probar ahora!
           </a>
@@ -262,39 +267,51 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Soluciones para cada industria
           </h2>
-          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {[
               {
                 img: "/images/factupos-restaurante.png",
                 title: "Restaurantes",
-                desc: "Pedidos rápidos, cocina conectada y facturación en un clic.",
+                desc: "Pedidos rápidos, cocina integrada y facturación en un clic.",
               },
               {
                 img: "/images/factupos-supermercado.png",
-                title: "Retail",
-                desc: "Gestión de inventario inteligente y ventas omnicanal.",
+                title: "Punto de venta masivo",
+                desc: "Inventario inteligente y ventas ágiles para grandes volúmenes.",
               },
               {
                 img: "/images/factupos-rifas-oficina.png",
                 title: "Rifas y Sorteos",
-                desc: "Control total de boletas, pagos y participantes.",
+                desc: "Control total de boletas, pagos y participantes sin errores.",
+              },
+              {
+                img: "/images/factupos-parqueadero.png",
+                title: "Parqueaderos",
+                desc: "Entradas y salidas cronometradas, tarifas automáticas y reportes en tiempo real.",
+              },
+              {
+                img: "/images/factupos-dian-descargas.png",
+                title: "Descarga Masiva DIAN",
+                desc: "Automatiza la obtención y organización de facturas electrónicas desde la DIAN.",
               },
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-10 rounded-3xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500"
+                className="p-8 rounded-3xl shadow-lg hover:shadow-2xl transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-orange-500 flex flex-col items-center text-center"
               >
                 <Image
                   src={c.img}
                   alt={c.title}
-                  width={90}
-                  height={90}
-                  className="mb-6"
+                  width={120}
+                  height={120}
+                  className="mb-6 rounded-2xl"
                 />
-                <h3 className="text-2xl font-bold mb-3 text-cyan-600">
+                <h3 className="text-xl font-bold mb-3 text-orange-600">
                   {c.title}
                 </h3>
-                <p className="leading-relaxed text-gray-700">{c.desc}</p>
+                <p className="leading-relaxed text-gray-700 text-sm">
+                  {c.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -302,7 +319,7 @@ export default function Home() {
       </section>
 
       {/* PLANES */}
-      <section id="planes" className="py-24 bg-gradient-to-br from-cyan-50 via-white to-blue-50">
+      <section id="planes" className="py-24 bg-gradient-to-br from-cyan-50 via-white to-orange-50">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Planes sin letra pequeña
@@ -365,7 +382,7 @@ export default function Home() {
             ].map(([q, a]) => (
               <details
                 key={q}
-                className="p-6 border border-gray-200 rounded-2xl cursor-pointer open:bg-cyan-50"
+                className="p-6 border border-gray-200 rounded-2xl cursor-pointer open:bg-orange-50"
               >
                 <summary className="font-semibold text-gray-900">{q}</summary>
                 <p className="mt-3 text-gray-700 leading-relaxed">{a}</p>
@@ -381,7 +398,7 @@ export default function Home() {
           <div>
             <Image
               src="/logo.svg"
-              alt="logo"
+              alt="FactuPOS"
               width={110}
               height={110}
               className="mb-6"
@@ -412,11 +429,12 @@ export default function Home() {
           </nav>
           <div>
             <h3 className="font-bold mb-3 text-white">Contáctanos</h3>
-            <p>soporte@factupos.co</p>
-            <p>+57 313 675 9329</p>
+            <p className="mb-1">factuposcolombia@gmail.com</p>
+            <p className="mb-1">+57 310 410 8508</p>
+            <p className="">+57 314 733 0577</p>
             <div className="mt-6 flex space-x-6">
               <a
-                href="https://wa.me/573147330577"
+                href="https://wa.me/573104108508"
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
@@ -429,25 +447,6 @@ export default function Home() {
                   <path d="M16 .063c-8.837 0-16 7.163-16 16 0 2.837.722 5.623 2.094 8.063L.063 32l8.063-2.094C10.377 30.277 13.163 31 16 31c8.837 0 16-7.163 16-16S24.837.063 16 .063zm0 2.938c7.146 0 12.999 5.853 12.999 12.999 0 7.146-5.853 12.999-12.999 12.999-2.746 0-5.404-.828-7.68-2.395l-.549-.364-4.791 1.244 1.277-4.666-.357-.573C3.618 20.718 2.938 18.428 2.938 16 2.938 8.854 8.854 3 16 3zm7.068 17.24c-.297-.148-1.759-.867-2.031-.965-.273-.099-.472-.148-.67.148-.199.297-.767.965-.94 1.164-.173.199-.347.223-.644.074-.297-.148-1.255-.462-2.39-1.475-.883-.788-1.48-1.763-1.653-2.06-.173-.297-.019-.458.13-.606.134-.134.297-.347.446-.52.148-.173.198-.297.297-.495.099-.198.05-.371-.025-.52-.074-.148-.669-1.612-.916-2.214-.242-.58-.487-.502-.669-.513l-.57-.01c-.198 0-.52.074-.793.372-.273.297-1.041 1.017-1.041 2.48 0 1.462 1.065 2.875 1.213 3.074.148.198 2.1 3.205 5.072 4.492.708.305 1.262.487 1.693.623.712.227 1.36.195 1.872.118.571-.085 1.759-.718 2.006-1.413.248-.695.248-1.29.173-1.413-.074-.124-.272-.198-.57-.347z" />
                 </svg>
                 WhatsApp
-              </a>
-              <a
-                href="https://github.com/Factupos"
-                className="hover:text-white flex items-center"
-                aria-label="GitHub"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.867 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.703-2.782.603-3.369-1.343-3.369-1.343-.455-1.157-1.11-1.465-1.11-1.465-.908-.62.069-.607.069-.607 1.004.07 1.532 1.032 1.532 1.032.892 1.529 2.341 1.087 2.91.832.092-.647.349-1.087.636-1.337-2.22-.252-4.555-1.11-4.555-4.945 0-1.092.39-1.987 1.03-2.687-.103-.253-.447-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.56 9.56 0 0112 6.845c.853.004 1.71.115 2.514.337 1.908-1.295 2.748-1.026 2.748-1.026.546 1.377.202 2.394.1 2.647.64.7 1.028 1.595 1.028 2.687 0 3.845-2.338 4.69-4.566 4.938.359.31.678.92.678 1.854 0 1.338-.012 2.417-.012 2.747 0 .269.18.58.688.48A10.014 10.014 0 0022 12c0-5.523-4.477-10-10-10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                GitHub
               </a>
             </div>
           </div>
