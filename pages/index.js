@@ -19,19 +19,26 @@ export default function Home() {
   }, [modalOpen]);
 
   // Bloquear el scroll del fondo mientras el modal está abierto y
-  // asegurarnos de que la página vuelva al inicio al cerrar el modal
+  // garantizar que, al cerrar el formulario, se vea el inicio de la página
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const body = document.body;
+    const toTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
     if (modalOpen) {
       body.classList.add("overflow-hidden");
-      // Garantiza que el usuario vea el inicio de la página al cargar
-      window.scrollTo(0, 0);
+      toTop(); // al abrir, aseguramos la posición inicial
     } else {
       body.classList.remove("overflow-hidden");
-      // Al cerrar el modal nos aseguramos de estar en la parte superior
-      window.scrollTo(0, 0);
+      // pequeño retraso para garantizar que el modal haya salido del flujo
+      setTimeout(toTop, 100);
     }
+
     return () => body.classList.remove("overflow-hidden");
   }, [modalOpen]);
 
@@ -198,10 +205,15 @@ export default function Home() {
       href="https://wa.me/573147330577"
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
+      className="fixed bottom-6 right-4 md:right-6 z-40 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
       aria-label="WhatsApp"
     >
-      <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={36} height={36} />
+      <Image
+        src="/images/whatsapp-icon-optimized.svg"
+        alt="WhatsApp"
+        width={32}
+        height={32}
+      />
     </a>
   );
 
@@ -247,9 +259,9 @@ export default function Home() {
       {WhatsAppBtn}
 
       {/* HERO */}
-      <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
-        {/* Logo responsive: centrado en móviles, izquierdo en desktop */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 lg:left-8 lg:transform-none lg:top-6 flex items-center space-x-3">
+      <header className="relative overflow-visible bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
+        {/* Logo centrado para todos los dispositivos */}
+        <div className="absolute top-4 sm:top-6 md:top-6 left-1/2 -translate-x-1/2 flex items-center space-x-3">
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
@@ -261,13 +273,18 @@ export default function Home() {
           />
           <span className="sr-only">FactuPOS</span>
         </div>
+
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center" id="hero">
+        <div
+          className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center"
+          id="hero"
+        >
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
           <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
-            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al siguiente nivel.
+            Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al
+            siguiente nivel.
           </p>
           <a
             href="#planes"
@@ -315,7 +332,11 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""}`}
+                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${
+                  c.title === "Descarga Masiva DIAN"
+                    ? "lg:col-span-2 lg:col-start-2"
+                    : ""
+                }`}
               >
                 <Image
                   src={c.img}
@@ -337,7 +358,10 @@ export default function Home() {
       </section>
 
       {/* PLANES SOFTWARE */}
-      <section id="planes" className="py-24 bg-gradient-to-br from-cyan-50 via-white to-orange-50">
+      <section
+        id="planes"
+        className="py-24 bg-gradient-to-br from-cyan-50 via-white to-orange-50"
+      >
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Planes de Software
@@ -533,7 +557,13 @@ export default function Home() {
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
-                <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={24} height={24} className="mr-2" />
+                <Image
+                  src="/images/whatsapp-icon-optimized.svg"
+                  alt="WhatsApp"
+                  width={24}
+                  height={24}
+                  className="mr-2"
+                />
                 WhatsApp
               </a>
             </div>
