@@ -183,7 +183,7 @@ export default function Home() {
       className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-xl hover:scale-110 transition"
       aria-label="WhatsApp"
     >
-      <Image src="/images/whatsapp-icon-optimized.png" alt="WhatsApp" width={36} height={36} />
+      <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={36} height={36} />
     </a>
   );
 
@@ -512,7 +512,7 @@ export default function Home() {
                 className="hover:text-green-400 flex items-center"
                 aria-label="WhatsApp"
               >
-                <Image src="/images/whatsapp-icon-optimized.png" alt="WhatsApp" width={24} height={24} className="mr-2" />
+                <Image src="/images/whatsapp-icon-optimized.svg" alt="WhatsApp" width={24} height={24} className="mr-2" />
                 WhatsApp
               </a>
             </div>
