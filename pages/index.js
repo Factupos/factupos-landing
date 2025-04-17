@@ -390,7 +390,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold text-center mb-14 text-gray-900">
             Paquetes de Documentos Electrónicos
           </h2>
-          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="grid gap-12 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <PricingCard
               title="Starter 450"
               price="$50.000 / mes"
@@ -428,11 +428,11 @@ export default function Home() {
               ]}
             />
             <PricingCard
-              title="Facturación Masiva 2000+"
-              price="$78 por doc (>2000/mes)"
+              title="Facturación Masiva"
+              price="$78 por documento"
               features={[
-                "Consumo superior a 2000 documentos mensuales",
-                "Costo por documento: $78",
+                "Más de 2.000 documentos al mes",
+                "Costo fijo por documento: $78",
                 "Soporte prioritario incluido",
               ]}
             />
