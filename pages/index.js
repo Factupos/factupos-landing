@@ -303,12 +303,12 @@ export default function Home() {
                 desc: "Control total de boletas, pagos y participantes sin errores.",
               },
               {
-                img: "/images/factupos-parqueadero.png",
+                img: "/images/Parqueadero.png",
                 title: "Parqueaderos",
                 desc: "Entradas y salidas cronometradas, tarifas automáticas y reportes en tiempo real.",
               },
               {
-                img: "/images/factupos-dian-descargas.png",
+                img: "/images/Dian.png",
                 title: "Descarga Masiva DIAN",
                 desc: "Automatiza la obtención y organización de facturas electrónicas desde la DIAN.",
               },
