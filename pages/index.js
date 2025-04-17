@@ -248,7 +248,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-2 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-2 inline-block bg-orange-500 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-orange-600 transition"
           >
             ¡Probar ahora!
           </a>
