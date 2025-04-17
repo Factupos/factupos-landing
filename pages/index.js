@@ -315,7 +315,7 @@ export default function Home() {
             ].map((c) => (
               <div
                 key={c.title}
-                className="p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center"
+                className={`p-8 rounded-3xl shadow-xl hover:shadow-3xl hover:-translate-y-1 transition bg-gradient-to-br from-white to-gray-50 border-b-4 border-cyan-500 flex flex-col items-center text-center ${c.title === "Descarga Masiva DIAN" ? "lg:col-span-2 lg:col-start-2" : ""}`}
               >
                 <Image
                   src={c.img}
