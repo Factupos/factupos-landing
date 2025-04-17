@@ -248,8 +248,8 @@ export default function Home() {
 
       {/* HERO */}
       <header className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
-        {/* Logo superior izquierdo */}
-        <div className="absolute top-4 left-4 lg:top-6 lg:left-8 flex items-center space-x-3">
+        {/* Logo responsive: centrado en móviles, izquierdo en desktop */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 lg:left-8 lg:transform-none lg:top-6 flex items-center space-x-3">
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
@@ -262,7 +262,7 @@ export default function Home() {
           <span className="sr-only">FactuPOS</span>
         </div>
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-8 md:pt-12 text-center flex flex-col items-center" id="hero">
+        <div className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center" id="hero">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
