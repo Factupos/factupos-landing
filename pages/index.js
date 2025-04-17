@@ -239,7 +239,7 @@ export default function Home() {
           <span className="sr-only">FactuPOS</span>
         </div>
         {/* Contenido central */}
-        <div className="max-w-6xl mx-auto px-6 pt-16 md:pt-20 text-center flex flex-col items-center" id="hero">
+        <div className="max-w-6xl mx-auto px-6 pt-8 md:pt-12 text-center flex flex-col items-center" id="hero">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             El software de facturación que evoluciona contigo
           </h1>
@@ -248,7 +248,7 @@ export default function Home() {
           </p>
           <a
             href="#planes"
-            className="mt-4 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
+            className="mt-2 inline-block bg-white text-orange-600 font-bold px-8 py-4 rounded-full shadow-lg hover:bg-gray-100 transition"
           >
             ¡Probar ahora!
           </a>
