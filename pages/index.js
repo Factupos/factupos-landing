@@ -261,7 +261,8 @@ export default function Home() {
       {/* HERO */}
       <header className="relative overflow-visible bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
         {/* Logo centrado para todos los dispositivos */}
-        <div className="absolute top-4 sm:top-6 md:top-6 left-1/2 -translate-x-1/2 flex items-center space-x-3">
+        <div className="absolute top-4 sm:top-6 md:top-6 left-1/2 -translate-x-1/2 lg:left-8 lg:transform-none flex items-center space-x-3">
+
           <Image
             src="/images/factupos-logo.png"
             alt="FactuPOS"
