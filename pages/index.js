@@ -86,7 +86,7 @@ export default function Home() {
             >
               ✕
             </button>
-            <h2 className="text-3xl font-extrabold mb-6 text-blue-700 text-center">
+            <h2 className="text-3xl font-extrabold mb-6 text-cyan-600 text-center">
               ¡Conversemos! 💬
             </h2>
             <form
@@ -189,8 +189,8 @@ export default function Home() {
 
   /* Pricing Card Sub‑component */
   const PricingCard = ({ title, price, features, cta, openModal = false }) => (
-    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-blue-600 max-w-sm mx-auto">
-      <h3 className="text-2xl font-extrabold text-blue-700 mb-4 text-center">
+    <div className="rounded-3xl bg-white p-10 shadow-xl hover:shadow-2xl transition border-t-4 border-cyan-500 max-w-sm mx-auto">
+      <h3 className="text-2xl font-extrabold text-cyan-600 mb-4 text-center">
         {title}
       </h3>
       <p className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
@@ -207,12 +207,7 @@ export default function Home() {
       {cta && (
         <a
           href="#!"
-          onClick={(e) => {
-            if (openModal) {
-              e.preventDefault();
-              setModalOpen(true);
-            }
-          }}
+          onClick={(e) => { if (openModal) { e.preventDefault(); setModalOpen(true); } }}
           className="block text-center px-6 py-3 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white rounded-xl font-semibold hover:opacity-90"
         >
           {cta}
