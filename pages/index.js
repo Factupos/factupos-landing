@@ -550,7 +550,7 @@ export default function Home() {
             <h3 className="font-bold mb-3 text-white">Contáctanos</h3>
             <p className="mb-1">factuposcolombia@gmail.com</p>
             <p className="mb-1">+57 310 410 8508</p>
-            <p className="">+57 314 733 0577</p>
+            <p className="">+57 310 410 8508</p>
             <div className="mt-6 flex space-x-6">
               <a
                 href="https://wa.me/573147330577"
