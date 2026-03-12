@@ -252,7 +252,7 @@ export default function Home() {
   );
 
   /* ──────────────────────────────── RETURN ──────────────────────────────────── */
-  return (
+ return (
     <main className="font-sans text-gray-800 scroll-smooth">
       {ModalForm}
       {ReopenBtn}
@@ -260,6 +260,7 @@ export default function Home() {
 
       {/* HERO */}
       <header className="relative overflow-visible bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-700 text-white pb-20">
+        
         {/* Logo centrado para todos los dispositivos */}
         <div className="absolute top-4 sm:top-6 md:top-6 left-1/2 -translate-x-1/2 lg:left-40 lg:transform-none flex items-center space-x-3">
           <Image
@@ -276,19 +277,26 @@ export default function Home() {
 
         {/* Contenido central */}
         <div
-          className="max-w-6xl mx-auto px-6 pt-32 md:pt-12 text-center flex flex-col items-center"
+          className="max-w-6xl mx-auto px-6 pt-36 md:pt-16 text-center flex flex-col items-center"
           id="hero"
         >
+          {/* Aquí está "Jeisen Distribuciones" liderando la página */}
+          <p className="text-sm md:text-base font-semibold uppercase tracking-widest text-orange-200 mb-2">
+            Jeisen Distribuciones presenta
+          </p>
+
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
-            El software de facturación que evoluciona contigo
+            <span className="text-orange-400">FACTUPOS:</span> <br className="md:hidden" />El software de facturación que evoluciona contigo
           </h1>
+
           <p className="text-xl md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed">
             Cumple con la DIAN, simplifica tus procesos y lleva tu negocio al
             siguiente nivel.
           </p>
+          
           <a
             href="#planes"
-            className="relative z-10 mt-2 inline-block bg-orange-500 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-orange-600 transition"
+            className="relative z-10 mt-6 inline-block bg-orange-500 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-orange-600 transition"
           >
             ¡Probar ahora!
           </a>
@@ -522,9 +530,10 @@ export default function Home() {
               height={110}
               className="mb-6"
             />
-            <p className="leading-relaxed">
-              Simplificamos tu facturación, impulsamos tu negocio.
-            </p>
+           <p className="leading-relaxed">
+  Simplificamos tu facturación, impulsamos tu negocio.<br/>
+  <strong>Una solución tecnológica de Jeisen Distribuciones.</strong>
+</p>
           </div>
           <nav>
             <h3 className="font-bold mb-3 text-white">Empresa</h3>
@@ -570,7 +579,7 @@ export default function Home() {
           </div>
         </div>
         <p className="text-center mt-14 text-sm">
-          © {new Date().getFullYear()} FactuPOS. Todos los derechos reservados.
+          © {new Date().getFullYear()} Jeisen Distribuciones. Todos los derechos reservados. FactuPOS es un software desarrollado por Jeisen Distribuciones.
         </p>
       </footer>
     </main>
