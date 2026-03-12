@@ -281,9 +281,11 @@ export default function Home() {
           id="hero"
         >
           {/* Aquí está "Jeisen Distribuciones" liderando la página */}
-          <p className="text-sm md:text-base font-semibold uppercase tracking-widest text-orange-200 mb-2">
-            Jeisen Distribuciones presenta
-          </p>
+          <div className="inline-block mb-6 px-6 py-2 rounded-full bg-gradient-to-r from-gray-900/50 to-gray-800/50 border border-white/20 backdrop-blur-md shadow-xl">
+            <p className="text-sm md:text-base font-extrabold text-white uppercase tracking-widest">
+              Un desarrollo oficial de <span className="text-orange-400">Jeisen Distribuciones</span>
+            </p>
+          </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight max-w-4xl">
             <span className="text-orange-400">FACTUPOS:</span> <br className="md:hidden" />El software de facturación que evoluciona contigo
