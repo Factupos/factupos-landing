@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta name="facebook-domain-verification" content="u8is3rp7ejoyvpk7ucrzj344qy2ykc" />
         <link rel="icon" href="/Factuposlogo.ico" />
-        <title>FactuPOS</title>
+        <title>FactuPOS - de Jeisen Distribuciones</title>
       </Head>
       <body className="antialiased">
         <Main />
